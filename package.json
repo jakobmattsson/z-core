@@ -3,17 +3,29 @@
   "description": "Utility library for JavaScript promises",
   "version": "0.0.1",
   "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobmattsson.se)",
-  "main": "./lib/z.js",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/jakobmattsson/Z"
+  },
+  "scripts": {
+    "test": "mocha -r should --compilers coffee:coffee-script --no-colors --recursive spec --grep \"$TESTS\"",
+    "pretest": "coffee -co lib src",
+    "prepublish": "coffee -co lib src"
   },
   "engines": {
     "npm": ">= 1.3 < 2",
     "node": ">= 0.10 < 0.11"
   },
+  "devDependencies": {
+    "jscov": "^0.5.7",
+    "mocha": "^1.12.1",
+    "mocha-term-cov-reporter": "^0.1.4",
+    "should": "^1.2.2",
+    "coffee-script": "^1.6.3"
+  },
   "dependencies": {
-    "Q": "^0.9.7",
+    "q": "^1.0.0",
     "underscore": "^1.4.0"
   }
 }
