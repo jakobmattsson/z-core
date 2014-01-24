@@ -30,8 +30,113 @@ module.exports = Z = (obj) ->
 
   arrayMethods = ['reverse', 'concat', 'join', 'slice', 'indexOf', 'lastIndexOf', 'every', 'some', 'filter', 'find', 'findIndex', 'map', 'reduce', 'reduceRight']
   stringMethods = ['split']
-  underscoreMethods = ['object', 'sortBy', 'omit', 'map', 'keys', 'pick']
-  underscoreEachMethods = ['omit']
+  underscoreMethods = [
+    # COLLECTIONS
+    'each'
+    # 'map' -- ignored in favor of the native method
+    # 'reduce' -- ignored in favor of the native method
+    # 'reduceRight' -- ignored in favor of the native method
+    # 'find' -- ignored in favor of the native method
+    'filter'
+    'where'
+    'findWhere'
+    'reject'
+    # 'every' -- ignored in favor of the native method
+    # 'some' -- ignored in favor of the native method
+    'contains'
+    'invoke'
+    'pluck'
+    'max'
+    'min'
+    'sortBy'
+    'groupBy'
+    'indexBy'
+    'countBy'
+    'shuffle'
+    'sample'
+    'toArray'
+    'size'
+
+    # ARRAYS
+    'first'
+    'initial'
+    'last'
+    'rest'
+    'compact'
+    'flatten'
+    'without'
+    'union'
+    'intersection'
+    'difference'
+    'uniq'
+    'zip'
+    'object'
+    'indexOf'
+    'lastIndexOf'
+    'sortedIndex'
+    'range'
+
+    # FUNCTIONS -- not sure if these makes sense yet
+    # 'bind'
+    # 'bindAll'
+    # 'partial'
+    # 'memoize'
+    # 'delay'
+    # 'defer'
+    # 'throttle'
+    # 'debounce'
+    # 'once'
+    # 'after'
+    # 'wrap'
+    # 'compose'
+
+    # OBJECTS
+    'keys'
+    'values'
+    'pairs'
+    'invert'
+    'functions'
+    'extend'
+    'pick'
+    'omit'
+    'defaults'
+    'clone'
+    'tap'
+    'has'
+    'isEqual'
+    'isEmpty'
+    'isElement'
+    'isArray'
+    'isObject'
+    'isArguments'
+    'isFunction'
+    'isString'
+    'isNumber'
+    'isFinite'
+    'isBoolean'
+    'isDate'
+    'isRegExp'
+    'isNaN'
+    'isNull'
+    'isUndefined'
+
+    # UTILITY
+    # 'noConflict' -- not applicable
+    'identity'
+    'times'
+    'random'
+    # 'mixin' -- I have no idea how this would affect things
+    'uniqueId'
+    'escape'
+    'unescape'
+    'result'
+    'template'
+
+    # CHAINING -- zee has its own chaining
+    # 'chain'
+    # 'value'
+  ]
+  underscoreEachMethods = ['omit', 'pick']
 
   underscoreMethods.forEach (methodName) ->
     def methodName, (resolved, args...) ->
