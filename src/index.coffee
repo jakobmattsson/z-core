@@ -28,6 +28,7 @@ module.exports = Z = (obj) ->
     p[name] = (args...) ->
       Z superMethod.apply(this, args)
 
+  genericMethods = ['toString']
   arrayMethods = ['reverse', 'concat', 'join', 'slice', 'indexOf', 'lastIndexOf', 'every', 'some', 'filter', 'find', 'findIndex', 'map', 'reduce', 'reduceRight']
   stringMethods = ['split']
   underscoreMethods = [
@@ -145,6 +146,10 @@ module.exports = Z = (obj) ->
   underscoreEachMethods.forEach (methodName) ->
     def (methodName + 'Each'), (resolved, args...) ->
       resolved.map (e) -> _(e)[methodName](args...)
+
+  genericMethods.forEach (methodName) ->
+    def methodName, (resolved, args...) ->
+      resolved[methodName].apply(resolved, args)
 
   arrayMethods.forEach (methodName) ->
     def methodName, (resolved, args...) ->
