@@ -1,7 +1,7 @@
 {
   "name": "zee",
   "description": "Utility library for JavaScript promises",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobmattsson.se)",
   "main": "./lib/index.js",
   "repository": {
