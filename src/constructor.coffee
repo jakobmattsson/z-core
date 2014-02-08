@@ -1,5 +1,6 @@
 Q = require 'q'
 _ = require 'underscore'
+_s = require 'underscore.string'
 util = require 'util'
 
 resolveCompletely = (unresolved) ->
@@ -18,6 +19,9 @@ resolveCompletely = (unresolved) ->
 
 
 
+underscoreStringMethods = [
+  'startsWith'
+]
 
 underscoreMethods = [
   # COLLECTIONS
@@ -166,6 +170,12 @@ exports.creator = ({ log }) -> (obj) ->
         throw new Error("Object must be an array in order to invoke '#{methodName}'")
       resolved[methodName].apply(resolved, args)
 
+  underscoreStringMethods.forEach (methodName) ->
+    def methodName, (resolved, args...) ->
+      if typeof resolved != 'string'
+        throw new Error("Object must be a string in order to invoke '#{methodName}'")
+      _s[methodName](resolved, args...)
+
   stringMethods.forEach (methodName) ->
     def methodName, (resolved, args...) ->
       if typeof resolved != 'string'
@@ -189,6 +199,7 @@ exports.methods = -> _.flatten [
   genericMethods
   arrayMethods
   stringMethods
+  underscoreStringMethods
   'log'
   'put'
   underscoreEachMethods.map((x) -> x + 'Each')

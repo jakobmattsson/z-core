@@ -157,6 +157,26 @@ describe 'underscore method', ->
       result = f.then (fResolved) -> fResolved(2)
       result.should.become 102
 
+  describe 'contains', ->
+
+    it 'returns true when an array contains the given value', ->
+      Z([1, 2, 3]).contains(2).should.become true
+
+    it 'returns false when an array contains the given value', ->
+      Z([1, 2, 3]).contains(4).should.become false
+
+
+
+describe 'underscore.string method', ->
+
+  describe 'startsWith', ->
+
+    it 'returns true if the given string starts with the given argument', ->
+      Z("foobar").startsWith('foo').should.become true
+
+    it 'returns false if the given string does not start with the given argument', ->
+      Z("foobar").startsWith('bar').should.become false
+
 
 
 describe 'underscore method each', ->
