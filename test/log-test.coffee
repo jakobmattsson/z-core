@@ -1,4 +1,3 @@
-require('./support/node')
 Q = require 'q'
 jscov = require 'jscov'
 {zeeCreator} = require jscov.cover('..', 'src', 'constructor')
