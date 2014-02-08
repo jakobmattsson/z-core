@@ -19,7 +19,7 @@
   },
   "bugs": "http://github.com/jakobmattsson/Z/issues",
   "scripts": {
-    "coverage": "jscov src .cov && JSCOV=.cov mocha --reporter mocha-term-cov-reporter",
+    "coverage": "jscov --expand --conditionals src .cov && JSCOV=.cov mocha --reporter mocha-term-cov-reporter",
     "test": "mocha --grep \"$TESTS\"",
     "pretest": "coffee -co lib src",
     "prepublish": "coffee -co lib src"
