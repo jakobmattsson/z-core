@@ -20,9 +20,6 @@ describe 'array method', ->
       small = arr.filter (x) -> x.a <= 2
       small.should.become [{ a: 1 }, { a: 2 }]
 
-    it 'fails given an object', ->
-      Z({}).filter((x) -> x).should.be.rejected
-
   describe 'join', ->
 
     it 'works given an array', ->
@@ -40,6 +37,11 @@ describe 'Z method', ->
     x = Z(1)
     prototypeOfQ.isPrototypeOf(x).should.eql true
 
+  it 'returns an object that has the expected functions', ->
+    x = Z(1)
+    keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
+    methods = Z.methods().sort (a, b) -> a.localeCompare(b)
+    keys.should.eql methods
 
 
 describe 'Q method', ->

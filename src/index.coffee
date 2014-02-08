@@ -20,16 +20,16 @@ resolveCompletely = (unresolved) ->
 underscoreMethods = [
   # COLLECTIONS
   'each'
-  # 'map' -- ignored in favor of the native method
-  # 'reduce' -- ignored in favor of the native method
-  # 'reduceRight' -- ignored in favor of the native method
-  # 'find' -- ignored in favor of the native method
+  'map'
+  'reduce'
+  'reduceRight'
+  'find'
   'filter'
   'where'
   'findWhere'
   'reject'
-  # 'every' -- ignored in favor of the native method
-  # 'some' -- ignored in favor of the native method
+  'every'
+  'some'
   'contains'
   'invoke'
   'pluck'
@@ -124,11 +124,15 @@ underscoreMethods = [
   # 'value'
 ]
 
-
+genericMethods = ['toString']
+arrayMethods = ['reverse', 'concat', 'join', 'slice', 'findIndex']
+stringMethods = ['split']
+underscoreEachMethods = ['omit', 'pick', 'keys']
 
 
 module.exports = Z = (obj) ->
-  p = resolveCompletely(obj)
+  p = Object.create(resolveCompletely(obj))
+  #p = resolveCompletely(obj)
 
   def = (name, f) ->
     p[name] = (args...) ->
@@ -139,12 +143,6 @@ module.exports = Z = (obj) ->
     superMethod = p[name]
     p[name] = (args...) ->
       Z superMethod.apply(this, args)
-
-  genericMethods = ['toString']
-  arrayMethods = ['reverse', 'concat', 'join', 'slice', 'indexOf', 'lastIndexOf', 'every', 'some', 'filter', 'find', 'findIndex', 'map', 'reduce', 'reduceRight']
-  stringMethods = ['split']
-
-  underscoreEachMethods = ['omit', 'pick', 'keys']
 
   underscoreMethods.forEach (methodName) ->
     def methodName, (resolved, args...) ->
@@ -179,9 +177,10 @@ module.exports = Z = (obj) ->
     else
       console.log(util.inspect(resolved, { depth: null }))
   
-  def 'inspect', (resolved, options) ->
-    utils.inspect(resolved, options)
-
   zeeify('get')
 
   p
+
+
+
+Z.methods = -> _.flatten [underscoreMethods, genericMethods, arrayMethods, stringMethods, 'log', underscoreEachMethods.map((x) -> x + 'Each')]
