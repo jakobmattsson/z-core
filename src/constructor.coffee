@@ -5,7 +5,9 @@ util = require 'util'
 resolveCompletely = (unresolved) ->
   Q.when(unresolved).then (resolved) ->
 
-    return resolved if !resolved? || typeof resolved in ['boolean', 'string', 'number', 'function']
+    fs = ['isBoolean', 'isString', 'isNumber', 'isFunction', 'isRegExp']
+
+    return resolved if !resolved? || fs.some (f) -> _[f](resolved)
     return Q.all(resolved.map(resolveCompletely)) if Array.isArray(resolved)
 
     unresolvedKeys = Q.all(_.keys(resolved))

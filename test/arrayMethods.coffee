@@ -47,6 +47,16 @@ describe 'Z method', ->
     result = obj.get('f').then (fResolved) -> fResolved(2)
     result.should.become 4
 
+  it 'retains top-level regexps', ->
+    f = Z(/foo/)
+    result = f.then (fResolved) -> fResolved.test("foobar")
+    result.should.become true
+
+  it 'retains nested regexps', ->
+    obj = Z({ a: 1, f: /foo/ })
+    result = obj.get('f').then (fResolved) -> fResolved.test("foobar")
+    result.should.become true
+
 
 
 describe 'Q method', ->
