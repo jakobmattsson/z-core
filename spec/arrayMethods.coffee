@@ -66,8 +66,19 @@ describe 'Q method', ->
       x = Z({ a: { b: 1 } }).get('a')
       prototypeOfQ.isPrototypeOf(x).should.eql true
 
+    it 'returns an object that is inherited from Q even when called multiple times', ->
+      prototypeOfQ = Q.makePromise.prototype
+      x = Z({ a: { b: { c: 1 } } }).get('a').get('b')
+      prototypeOfQ.isPrototypeOf(x).should.eql true
+
     it 'returns an object that has the expected functions', ->
       x = Z({ a: { b: 1 }}).get('a')
+      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
+      methods = Z.methods().sort (a, b) -> a.localeCompare(b)
+      keys.should.eql methods
+
+    it 'returns an object that has the expected functions even when called multiple times', ->
+      x = Z({ a: { b: { c: 1 } }}).get('a').get('b')
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
       methods = Z.methods().sort (a, b) -> a.localeCompare(b)
       keys.should.eql methods

@@ -131,8 +131,8 @@ underscoreEachMethods = ['omit', 'pick', 'keys']
 
 
 module.exports = Z = (obj) ->
-  p = Object.create(resolveCompletely(obj))
-  #p = resolveCompletely(obj)
+  overrideLayer = Object.create(resolveCompletely(obj))
+  p = Object.create(overrideLayer)
 
   def = (name, f) ->
     p[name] = (args...) ->
@@ -141,7 +141,7 @@ module.exports = Z = (obj) ->
   
   zeeify = (name) ->
     superMethod = p[name]
-    p[name] = (args...) ->
+    overrideLayer[name] = (args...) ->
       Z superMethod.apply(this, args)
 
   underscoreMethods.forEach (methodName) ->
@@ -189,6 +189,5 @@ Z.methods = -> _.flatten [
   arrayMethods
   stringMethods
   'log'
-  'get'
   underscoreEachMethods.map((x) -> x + 'Each')
 ]
