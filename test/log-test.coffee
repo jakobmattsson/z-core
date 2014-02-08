@@ -67,4 +67,3 @@ describe 'log', ->
     obj = @Z({ a: { b: { c: 1 } } })
     obj.log().then =>
       @out.should.eql [[{ a: { b: { c: 1 } } }]]
-
