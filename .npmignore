@@ -1,1 +1,7 @@
 src
+npm-debug.log
+test
+.npmignore
+.travis.yml
+node_modules
+
