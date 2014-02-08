@@ -150,6 +150,13 @@ describe 'underscore method', ->
     it 'fails when executed on a string', ->
       Z("foobar").keys().should.be.rejected
 
+  describe 'bind', ->
+
+    it 'binds a function to the given context', ->
+      f = Z((x) -> @ + x).bind(100)
+      result = f.then (fResolved) -> fResolved(2)
+      result.should.become 102
+
 
 
 describe 'underscore method each', ->

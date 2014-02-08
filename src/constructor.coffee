@@ -65,19 +65,19 @@ underscoreMethods = [
   'sortedIndex'
   'range'
 
-  # FUNCTIONS -- not sure if these makes sense yet
-  # 'bind'
-  # 'bindAll'
-  # 'partial'
-  # 'memoize'
-  # 'delay'
-  # 'defer'
-  # 'throttle'
-  # 'debounce'
-  # 'once'
-  # 'after'
-  # 'wrap'
-  # 'compose'
+  # FUNCTIONS
+  'bind'
+  'bindAll'
+  'partial'
+  'memoize'
+  'delay'
+  'defer'
+  'throttle'
+  'debounce'
+  'once'
+  'after'
+  'wrap'
+  'compose'
 
   # OBJECTS
   'keys'
