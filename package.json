@@ -10,7 +10,7 @@
   },
   "scripts": {
     "coverage": "jscov src .cov && JSCOV=.cov mocha --compilers coffee:coffee-script --recursive --reporter mocha-term-cov-reporter spec",
-    "test": "mocha -r should --compilers coffee:coffee-script --recursive spec --grep \"$TESTS\"",
+    "test": "mocha --compilers coffee:coffee-script --recursive spec --grep \"$TESTS\"",
     "pretest": "coffee -co lib src",
     "prepublish": "coffee -co lib src"
   },
@@ -22,11 +22,12 @@
     "jscov": "^0.5.7",
     "mocha": "^1.12.1",
     "mocha-term-cov-reporter": "^0.2.0",
-    "should": "^3.1.2",
+    "chai-as-promised": "^4.1.0",
+    "mocha-as-promised": "^2.0.0",
     "coffee-script": "^1.6.3"
   },
   "dependencies": {
     "q": "^1.0.0",
-    "underscore": "^1.4.0"
+    "underscore": "^1.5.2"
   }
 }
