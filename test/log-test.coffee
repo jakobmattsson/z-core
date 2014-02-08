@@ -1,6 +1,6 @@
 Q = require 'q'
 jscov = require 'jscov'
-{zeeCreator} = require jscov.cover('..', 'src', 'constructor')
+{creator} = require jscov.cover('..', 'src', 'constructor')
 
 
 
@@ -8,7 +8,7 @@ describe 'put', ->
   
   beforeEach ->
     @out = []
-    @Z = zeeCreator({ log: (args...) => @out.push(args) })
+    @Z = creator({ log: (args...) => @out.push(args) })
 
   it 'writes strings', ->
     obj = @Z("foo")
@@ -41,7 +41,7 @@ describe 'log', ->
 
   beforeEach ->
     @out = []
-    @Z = zeeCreator({ log: (args...) => @out.push(args) })
+    @Z = creator({ log: (args...) => @out.push(args) })
 
   it 'writes strings', ->
     obj = @Z("foo")

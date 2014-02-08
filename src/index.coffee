@@ -1,6 +1,6 @@
-zee = require './constructor'
+Z = require './constructor'
 
-module.exports = zee.zeeCreator({
+module.exports = Z.creator({
   log: (value) ->
     if console?.log?
       console.log(value)

@@ -1,7 +1,7 @@
 Q = require 'q'
 jscov = require 'jscov'
-{zeeCreator, methods} = require jscov.cover('..', 'src', 'constructor')
-Z = zeeCreator({ log: -> })
+{creator, methods} = require jscov.cover('..', 'src', 'constructor')
+Z = creator({ log: -> })
 
 
 

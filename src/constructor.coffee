@@ -119,7 +119,7 @@ underscoreMethods = [
   'result'
   'template'
 
-  # CHAINING -- zee has its own chaining
+  # CHAINING -- Z has its own chaining
   # 'chain'
   # 'value'
 ]
@@ -130,9 +130,9 @@ stringMethods = ['split']
 underscoreEachMethods = ['omit', 'pick', 'keys']
 
 
-exports.zeeCreator = ({ log }) -> (obj) ->
+exports.creator = ({ log }) -> (obj) ->
 
-  Z = exports.zeeCreator({ log })
+  Z = exports.creator({ log })
   overrideLayer = Object.create(resolveCompletely(obj))
   p = Object.create(overrideLayer)
 
