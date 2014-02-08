@@ -23,7 +23,6 @@ describe 'array method', ->
     it 'fails given an object', ->
       Z({}).filter((x) -> x).should.be.rejected
 
-
   describe 'join', ->
 
     it 'works given an array', ->
@@ -93,6 +92,7 @@ describe 'underscore method', ->
       Z("foobar").keys().should.be.rejected
 
 
+
 describe 'underscore method each', ->
 
   describe 'keys', ->
@@ -108,4 +108,3 @@ describe 'generic method', ->
 
     it 'turns the value into a string', ->
       Z(1).toString().should.become "1"
-
