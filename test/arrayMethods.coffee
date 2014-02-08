@@ -1,7 +1,167 @@
 Q = require 'q'
+_ = require 'underscore'
+_s = require 'underscore.string'
 jscov = require 'jscov'
 {creator, methods} = require jscov.cover('..', 'src', 'constructor')
-Z = creator({ log: -> })
+
+
+genericMethods = ['toString']
+arrayMethods = ['reverse', 'concat', 'join', 'slice', 'findIndex']
+stringMethods = ['split']
+
+underscoreStringMethods = ['startsWith']
+underscoreEachMethods = ['omit', 'pick', 'keys']
+underscoreMethods = [
+  # COLLECTIONS
+  'each', 'forEach'
+  'map', 'collect'
+  'reduce', 'inject', 'foldl', 'fold'
+  'reduceRight', 'foldr'
+  'find', 'detect'
+  'filter', 'select'
+  'where'
+  'findWhere'
+  'reject'
+  'every', 'all'
+  'some', 'any'
+  'contains', 'include'
+  'invoke'
+  'pluck'
+  'max'
+  'min'
+  'sortBy'
+  'groupBy'
+  'indexBy'
+  'countBy'
+  'shuffle'
+  'sample'
+  'toArray'
+  'size'
+
+  # ARRAYS
+  'first', 'head', 'take'
+  'initial'
+  'last'
+  'rest', 'tail', 'drop'
+  'compact'
+  'flatten'
+  'without'
+  'union'
+  'intersection'
+  'difference'
+  'uniq', 'unique'
+  'zip'
+  'object'
+  'indexOf'
+  'lastIndexOf'
+  'sortedIndex'
+  'range'
+
+  # FUNCTIONS
+  'bind'
+  'bindAll'
+  'partial'
+  'memoize'
+  'delay'
+  'defer'
+  'throttle'
+  'debounce'
+  'once'
+  'after'
+  'wrap'
+  'compose'
+
+  # OBJECTS
+  'keys'
+  'values'
+  'pairs'
+  'invert'
+  'functions', 'methods'
+  'extend'
+  'pick'
+  'omit'
+  'defaults'
+  'clone'
+  'tap'
+  'has'
+  'isEqual'
+  'isEmpty'
+  'isElement'
+  'isArray'
+  'isObject'
+  'isArguments'
+  'isFunction'
+  'isString'
+  'isNumber'
+  'isFinite'
+  'isBoolean'
+  'isDate'
+  'isRegExp'
+  'isNaN'
+  'isNull'
+  'isUndefined'
+
+  # UTILITY
+  # 'noConflict' -- not applicable
+  'identity'
+  'times'
+  'random'
+  # 'mixin' -- I have no idea how this would affect things
+  'uniqueId'
+  'escape'
+  'unescape'
+  'result'
+  'template'
+
+  # CHAINING -- Z has its own chaining
+  # 'chain'
+  # 'value'
+]
+
+exts = {}
+
+underscoreStringMethods.forEach (method) ->
+  exts[method] = (args...) ->
+    _s[method](@.value, args...)
+
+underscoreEachMethods.forEach (method) ->
+  exts[method + 'Each'] = (args...) ->
+    @.value.map (e) -> _(e)[method](args...)
+
+underscoreMethods.forEach (method) ->
+  exts[method] = (args...) ->
+    _(@.value)[method](args...)
+
+genericMethods.forEach (methodName) ->
+  exts[methodName] = (args...) ->
+    @.value[methodName](args...)
+
+arrayMethods.forEach (methodName) ->
+  exts[methodName] = (args...) ->
+    if !Array.isArray(@.value)
+      throw new Error("Object must be an array in order to invoke '#{methodName}'")
+    @.value[methodName](args...)
+
+stringMethods.forEach (methodName) ->
+  exts[methodName] = (args...) ->
+    if typeof @.value != 'string'
+      throw new Error("Object must be a string in order to invoke '#{methodName}'")
+    @.value[methodName](args...)
+
+
+
+
+
+Z = creator({
+  log: ->
+  extensions: exts
+})
+
+
+
+methodsList = []
+Object.keys(exts).forEach (name) ->
+  methodsList.push(name)
 
 
 
@@ -34,7 +194,7 @@ describe 'Z method', ->
   it 'returns an object that has the expected functions', ->
     x = Z(1)
     keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-    mets = methods().sort (a, b) -> a.localeCompare(b)
+    mets = methodsList.sort (a, b) -> a.localeCompare(b)
     keys.should.eql mets
 
   it 'retains top-level functions', ->
@@ -114,13 +274,13 @@ describe 'Q method', ->
     it 'returns an object that has the expected functions', ->
       x = Z({ a: { b: 1 }}).get('a')
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methods().sort (a, b) -> a.localeCompare(b)
+      mets = methodsList.sort (a, b) -> a.localeCompare(b)
       keys.should.eql mets
 
     it 'returns an object that has the expected functions even when called multiple times', ->
       x = Z({ a: { b: { c: 1 } }}).get('a').get('b')
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methods().sort (a, b) -> a.localeCompare(b)
+      mets = methodsList.sort (a, b) -> a.localeCompare(b)
       keys.should.eql mets
 
 
