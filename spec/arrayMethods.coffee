@@ -9,7 +9,8 @@ chai.use(chaiAsPromised)
 mochaAsPromised()
 
 
-{Z, methods} = require jscov.cover('..', 'src', 'constructor')
+{zeeCreator, methods} = require jscov.cover('..', 'src', 'constructor')
+Z = zeeCreator({ log: -> })
 
 describe 'array method', ->
 

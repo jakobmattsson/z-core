@@ -1,3 +1,3 @@
 zee = require './constructor'
 
-module.exports = zee.Z
+module.exports = zee.zeeCreator({ log: (value) -> console.log(value) })

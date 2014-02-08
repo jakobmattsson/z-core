@@ -130,7 +130,9 @@ stringMethods = ['split']
 underscoreEachMethods = ['omit', 'pick', 'keys']
 
 
-exports.Z = Z = (obj) ->
+exports.zeeCreator = ({ log }) -> (obj) ->
+
+  Z = exports.zeeCreator({ log })
   overrideLayer = Object.create(resolveCompletely(obj))
   p = Object.create(overrideLayer)
 
@@ -171,11 +173,11 @@ exports.Z = Z = (obj) ->
   def 'log', (resolved, shallow) ->
     if shallow
       if Array.isArray(resolved)
-        console.log(resolved...)
+        log(resolved...)
       else
-        console.log(resolved)
+        log(resolved)
     else
-      console.log(util.inspect(resolved, { depth: null }))
+      log(util.inspect(resolved, { depth: null }))
 
   zeeify('get')
 
