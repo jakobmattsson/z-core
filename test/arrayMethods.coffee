@@ -37,6 +37,16 @@ describe 'Z method', ->
     mets = methods().sort (a, b) -> a.localeCompare(b)
     keys.should.eql mets
 
+  it 'retains top-level functions', ->
+    f = Z((x) -> x*x)
+    result = f.then (fResolved) -> fResolved(2)
+    result.should.become 4
+
+  it 'retains nested functions', ->
+    obj = Z({ a: 1, f: (x) -> x*x })
+    result = obj.get('f').then (fResolved) -> fResolved(2)
+    result.should.become 4
+
 
 
 describe 'Q method', ->
