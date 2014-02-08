@@ -1,8 +1,15 @@
 {
   "name": "zee",
   "description": "Utility library for JavaScript promises",
-  "keywords": ["promises", "util", "functional", "server", "client", "browser"],
-  "version": "0.3.0",
+  "keywords": [
+    "promises",
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "version": "0.3.1",
   "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobmattsson.se)",
   "license": "MIT",
   "main": "./lib/index.js",
