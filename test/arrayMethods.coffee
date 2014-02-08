@@ -67,6 +67,21 @@ describe 'Z method', ->
     result = obj.get('f').then (d) -> d.getTime()
     result.should.eventually.be.a 'number'
 
+  it 'does not copy protoype chains when wrapping objects', ->
+    a = {}
+    b = Object.create(a)
+
+    Z(b).then (resolved) ->
+      Object.getPrototypeOf(resolved).should.eql Object.prototype
+
+  it 'does not copy properties from up the prototype chain when wrapping objects', ->
+    a = { v1: 1 }
+    b = Object.create(a)
+    b.v2 = 2
+
+    Z(b).then (resolved) ->
+      resolved.should.have.keys ['v2']
+
 
 
 describe 'Q method', ->
