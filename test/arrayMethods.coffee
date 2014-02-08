@@ -57,6 +57,16 @@ describe 'Z method', ->
     result = obj.get('f').then (fResolved) -> fResolved.test("foobar")
     result.should.become true
 
+  it 'retains top-level dates', ->
+    f = Z(new Date())
+    result = f.then (d) -> d.getTime()
+    result.should.eventually.be.a 'number'
+
+  it 'retains nested dates', ->
+    obj = Z({ a: 1, f: new Date()})
+    result = obj.get('f').then (d) -> d.getTime()
+    result.should.eventually.be.a 'number'
+
 
 
 describe 'Q method', ->

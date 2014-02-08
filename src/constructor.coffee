@@ -5,7 +5,7 @@ util = require 'util'
 resolveCompletely = (unresolved) ->
   Q.when(unresolved).then (resolved) ->
 
-    fs = ['isBoolean', 'isString', 'isNumber', 'isFunction', 'isRegExp']
+    fs = ['isBoolean', 'isString', 'isNumber', 'isFunction', 'isRegExp', 'isDate']
 
     return resolved if !resolved? || fs.some (f) -> _[f](resolved)
     return Q.all(resolved.map(resolveCompletely)) if Array.isArray(resolved)
