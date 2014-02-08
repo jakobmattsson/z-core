@@ -1,16 +1,10 @@
+require('./support/node')
 Q = require 'q'
-chai = require 'chai'
 jscov = require 'jscov'
-chaiAsPromised = require 'chai-as-promised'
-mochaAsPromised = require 'mocha-as-promised'
-
-chai.should()
-chai.use(chaiAsPromised)
-mochaAsPromised()
-
-
 {zeeCreator, methods} = require jscov.cover('..', 'src', 'constructor')
 Z = zeeCreator({ log: -> })
+
+
 
 describe 'array method', ->
 
