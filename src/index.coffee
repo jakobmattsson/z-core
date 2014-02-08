@@ -183,4 +183,12 @@ module.exports = Z = (obj) ->
 
 
 
-Z.methods = -> _.flatten [underscoreMethods, genericMethods, arrayMethods, stringMethods, 'log', underscoreEachMethods.map((x) -> x + 'Each')]
+Z.methods = -> _.flatten [
+  underscoreMethods
+  genericMethods
+  arrayMethods
+  stringMethods
+  'log'
+  'get'
+  underscoreEachMethods.map((x) -> x + 'Each')
+]
