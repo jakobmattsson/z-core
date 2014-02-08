@@ -27,7 +27,7 @@
     "mocha-term-cov-reporter": "^0.2.0",
     "chai-as-promised": "^4.1.0",
     "mocha-as-promised": "^2.0.0",
-    "coffee-script": "^1.6.3"
+    "coffee-script": "^1.7.1"
   },
   "dependencies": {
     "q": "^1.0.0",
