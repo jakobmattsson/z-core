@@ -138,7 +138,7 @@ module.exports = Z = (obj) ->
     p[name] = (args...) ->
       Z p.then (resolved) ->
         f(resolved, args...)
-  
+
   zeeify = (name) ->
     superMethod = p[name]
     overrideLayer[name] = (args...) ->
@@ -176,7 +176,7 @@ module.exports = Z = (obj) ->
         console.log(resolved)
     else
       console.log(util.inspect(resolved, { depth: null }))
-  
+
   zeeify('get')
 
   p
