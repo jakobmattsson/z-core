@@ -14,10 +14,13 @@ describe 'array method', ->
 
   describe 'filter', ->
 
-    it 'works', ->
+    it 'works given an array', ->
       arr = Z([{ a: 1 }, { a: 2 }, { a: 3 }])
       small = arr.filter (x) -> x.a <= 2
       small.should.become [{ a: 1 }, { a: 2 }]
+
+    it 'fails given an object', ->
+      Z({}).filter((x) -> x).should.be.rejected
 
 
 
@@ -44,8 +47,11 @@ describe 'string method', ->
 
   describe 'split', ->
 
-    it 'works', ->
+    it 'works given a string', ->
       Z("jakob mattsson").split('a').should.become ["j", "kob m", "ttsson"]
+
+    it 'fails given an object', ->
+      Z({}).split('a').should.be.rejected
 
 
 
@@ -69,3 +75,13 @@ describe 'underscore method each', ->
 
     it 'returns the keys of an object', ->
       Z([{ a: 1, b: 2 }, {}, { x: 1 }]).omitEach('a').should.become [{ b: 2 }, {}, { x: 1 }]
+
+
+
+describe 'generic method', ->
+
+  describe 'toString', ->
+
+    it 'turns the value into a string', ->
+      Z(1).toString().should.become "1"
+
