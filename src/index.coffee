@@ -140,7 +140,8 @@ module.exports = Z = (obj) ->
     # 'chain'
     # 'value'
   ]
-  underscoreEachMethods = ['omit', 'pick']
+
+  underscoreEachMethods = ['omit', 'pick', 'keys']
 
   underscoreMethods.forEach (methodName) ->
     def methodName, (resolved, args...) ->
