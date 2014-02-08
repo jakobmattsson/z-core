@@ -5,9 +5,9 @@ node_js:
 deploy:
   provider: npm
   email: jakob.mattsson@gmail.com
+  skip_cleanup: true
   api_key:
     secure: tgPQFfcy+HP/akKl59f90HGpe6Ic9SSXTODubhTxlMZqdT+94pYMbv0qBRJ3NHVtoYP0PBOK20kgWKbqeBEZfvVDeIOq6zXss1x43K/auZyfePg3cFVeiwP7aEyBrXbDMRUIc0NizFpVmSsncxOea6bXNGhT/6AuQmNuXVzeYrE=
   on:
     node: '0.10'
-    branch: master
-    skip_cleanup: true
+    tags: true
