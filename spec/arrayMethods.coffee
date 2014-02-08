@@ -1,3 +1,4 @@
+Q = require 'q'
 chai = require 'chai'
 jscov = require 'jscov'
 chaiAsPromised = require 'chai-as-promised'
@@ -33,6 +34,15 @@ describe 'array method', ->
 
 
 
+describe 'Z method', ->
+
+  it 'returns an object that is inherited from Q', ->
+    prototypeOfQ = Q.makePromise.prototype
+    x = Z(1)
+    prototypeOfQ.isPrototypeOf(x).should.eql true
+
+
+
 describe 'Q method', ->
 
   describe 'get', ->
@@ -49,6 +59,11 @@ describe 'Q method', ->
       filtered = arr.get('a')
       bValue.push(3)
       filtered.should.become { b: bValue }
+
+    it 'returns an object that is inherited from Q', ->
+      prototypeOfQ = Q.makePromise.prototype
+      x = Z({ a: { b: 1 } }).get('a')
+      prototypeOfQ.isPrototypeOf(x).should.eql true
 
 
 
