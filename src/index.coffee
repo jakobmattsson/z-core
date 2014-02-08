@@ -163,9 +163,6 @@ module.exports = Z = (obj) ->
         throw new Error("Object must be a string in order to invoke '#{methodName}'")
       resolved[methodName].apply(resolved, args)
 
-  def 'valueToString', (resolved) ->
-    resolved.toString()
-
   def 'log', (resolved, shallow) ->
     if shallow
       if Array.isArray(resolved)
