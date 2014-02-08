@@ -1,3 +1,3 @@
 zee = require './constructor'
 
-module.exports = zee
+module.exports = zee.Z

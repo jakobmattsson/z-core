@@ -9,7 +9,7 @@ chai.use(chaiAsPromised)
 mochaAsPromised()
 
 
-Z = require jscov.cover('..', 'src', 'index')
+{Z, methods} = require jscov.cover('..', 'src', 'constructor')
 
 describe 'array method', ->
 
@@ -40,8 +40,9 @@ describe 'Z method', ->
   it 'returns an object that has the expected functions', ->
     x = Z(1)
     keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-    methods = Z.methods().sort (a, b) -> a.localeCompare(b)
-    keys.should.eql methods
+    mets = methods().sort (a, b) -> a.localeCompare(b)
+    keys.should.eql mets
+
 
 
 describe 'Q method', ->
@@ -74,16 +75,14 @@ describe 'Q method', ->
     it 'returns an object that has the expected functions', ->
       x = Z({ a: { b: 1 }}).get('a')
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      methods = Z.methods().sort (a, b) -> a.localeCompare(b)
-      keys.should.eql methods
+      mets = methods().sort (a, b) -> a.localeCompare(b)
+      keys.should.eql mets
 
     it 'returns an object that has the expected functions even when called multiple times', ->
       x = Z({ a: { b: { c: 1 } }}).get('a').get('b')
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      methods = Z.methods().sort (a, b) -> a.localeCompare(b)
-      keys.should.eql methods
-
-
+      mets = methods().sort (a, b) -> a.localeCompare(b)
+      keys.should.eql mets
 
 
 

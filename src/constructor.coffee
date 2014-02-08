@@ -130,7 +130,7 @@ stringMethods = ['split']
 underscoreEachMethods = ['omit', 'pick', 'keys']
 
 
-module.exports = Z = (obj) ->
+exports.Z = Z = (obj) ->
   overrideLayer = Object.create(resolveCompletely(obj))
   p = Object.create(overrideLayer)
 
@@ -183,7 +183,7 @@ module.exports = Z = (obj) ->
 
 
 
-Z.methods = -> _.flatten [
+exports.methods = -> _.flatten [
   underscoreMethods
   genericMethods
   arrayMethods
