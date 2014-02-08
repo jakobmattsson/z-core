@@ -109,7 +109,7 @@ describe 'underscore method', ->
 
 describe 'underscore method each', ->
 
-  describe 'keys', ->
+  describe 'omit', ->
 
     it 'returns the keys of an object', ->
       Z([{ a: 1, b: 2 }, {}, { x: 1 }]).omitEach('a').should.become [{ b: 2 }, {}, { x: 1 }]
