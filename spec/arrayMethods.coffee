@@ -61,3 +61,11 @@ describe 'underscore method', ->
 
     it 'fails when executed on a string', ->
       Z("foobar").keys().should.be.rejected
+
+
+describe 'underscore method each', ->
+
+  describe 'keys', ->
+
+    it 'returns the keys of an object', ->
+      Z([{ a: 1, b: 2 }, {}, { x: 1 }]).omitEach('a').should.become [{ b: 2 }, {}, { x: 1 }]
