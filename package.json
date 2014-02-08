@@ -9,8 +9,8 @@
     "url": "http://github.com/jakobmattsson/Z"
   },
   "scripts": {
-    "coverage": "jscov src .cov && JSCOV=.cov mocha --compilers coffee:coffee-script --recursive --reporter mocha-term-cov-reporter test",
-    "test": "mocha --compilers coffee:coffee-script --recursive test --grep \"$TESTS\"",
+    "coverage": "jscov src .cov && JSCOV=.cov mocha --reporter mocha-term-cov-reporter test",
+    "test": "mocha test --grep \"$TESTS\"",
     "pretest": "coffee -co lib src",
     "prepublish": "coffee -co lib src"
   },
