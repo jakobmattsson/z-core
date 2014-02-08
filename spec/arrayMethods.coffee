@@ -23,6 +23,15 @@ describe 'array method', ->
       Z({}).filter((x) -> x).should.be.rejected
 
 
+  describe 'join', ->
+
+    it 'works given an array', ->
+      Z(["abc", 56, {}]).join('').should.become "abc56[object Object]"
+
+    it 'fails given an object', ->
+      Z({}).join('').should.be.rejected
+
+
 
 describe 'Q method', ->
 
