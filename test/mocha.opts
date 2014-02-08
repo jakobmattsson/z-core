@@ -1,2 +1,2 @@
 --compilers coffee:coffee-script
---require test/support/node.coffee
+--require test/support/node.js
