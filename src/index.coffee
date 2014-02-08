@@ -3,15 +3,18 @@ _ = require 'underscore'
 util = require 'util'
 
 resolveCompletely = (unresolved) ->
-  Q.when(unresolved).then (obj) ->
-    return obj if !obj? || typeof obj in ['boolean', 'string', 'number', 'function']
-    return Q.all(obj.map(resolveCompletely)) if Array.isArray(obj)
+  Q.when(unresolved).then (resolved) ->
 
-    keys = Q.all(_.keys(obj))
-    values = Q.all(_.values(obj).map(resolveCompletely))
+    return resolved if !resolved? || typeof resolved in ['boolean', 'string', 'number', 'function']
+    return Q.all(resolved.map(resolveCompletely)) if Array.isArray(resolved)
 
-    Q.all([keys, values]).then ([ks, vs]) ->
-      _.object(_.zip(ks, vs))
+    unresolvedKeys = Q.all(_.keys(resolved))
+    unresolvedValues = Q.all(_.values(resolved).map(resolveCompletely))
+
+    Q.all([unresolvedKeys, unresolvedValues]).then ([resolvedKeys, resolvedValues]) ->
+      _.object(_.zip(resolvedKeys, resolvedValues))
+
+
 
 
 
