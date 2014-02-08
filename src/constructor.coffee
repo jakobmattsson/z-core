@@ -170,14 +170,11 @@ exports.zeeCreator = ({ log }) -> (obj) ->
         throw new Error("Object must be a string in order to invoke '#{methodName}'")
       resolved[methodName].apply(resolved, args)
 
-  def 'log', (resolved, shallow) ->
-    if shallow
-      if Array.isArray(resolved)
-        log(resolved...)
-      else
-        log(resolved)
-    else
-      log(util.inspect(resolved, { depth: null }))
+  def 'log', (resolved) ->
+    log(resolved)
+
+  def 'put', (resolved) ->
+    log(util.inspect(resolved, { depth: null }))
 
   zeeify('get')
 
@@ -191,5 +188,6 @@ exports.methods = -> _.flatten [
   arrayMethods
   stringMethods
   'log'
+  'put'
   underscoreEachMethods.map((x) -> x + 'Each')
 ]
