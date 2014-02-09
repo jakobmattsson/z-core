@@ -18,7 +18,7 @@ overrides = ['get']
 
 init = ->
 
-  funcsToApply = {}
+  mixedIn = {}
 
   Z = (obj) ->
     resolvedObject = resolveCompletely(obj)
@@ -26,11 +26,10 @@ init = ->
     resultingPromise = tools.objectCreate(overrideLayer)
 
     overrides.forEach (name) ->
-      superMethod = resolvedObject[name]
       overrideLayer[name] = (args...) ->
-        Z superMethod.apply(this, args)
+        Z resolvedObject[name].apply(this, args)
 
-    tools.pairs(funcsToApply).forEach ([name, func]) ->
+    tools.pairs(mixedIn).forEach ([name, func]) ->
       resultingPromise[name] = (args...) ->
         Z resultingPromise.then (resolved) ->
           func.apply({ value: resolved }, args)
@@ -39,7 +38,7 @@ init = ->
 
   Z.mixin = tools.proc (hash) ->
     tools.pairs(hash).forEach ([name, func]) ->
-      funcsToApply[name] = func
+      mixedIn[name] = func
 
   Z
 
