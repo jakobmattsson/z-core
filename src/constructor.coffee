@@ -39,7 +39,11 @@ init = ->
 
   Z.mixin = proc (hash) ->
     pairs(hash).forEach ([name, func]) ->
-      mixedIn[name] = func
+      oldOne = mixedIn[name]
+      mixedIn[name] = ->
+        context = { value: @value }
+        context.base = oldOne if oldOne
+        func.apply(context, arguments)
 
   Z
 

@@ -122,6 +122,44 @@ describe 'Z method', ->
         v2.should.become 80
       ])
 
+    it 'can mixin the same function multiple times and passes the previous as context to the next', ->
+      @Z.mixin({
+        f1: (a1, a2) -> @value + a1 + a2
+      })
+      @Z.mixin({
+        f1: (a1, a2) -> @base.call({ value: 1 }, 2, @value + a1 + a2)
+      })
+
+      x = @Z(50)
+      v1 = x.f1(100, 200)
+
+      Object.keys(x).should.eql ['f1']
+      v1.should.become 353
+
+    it 'can mixin more than two of the same function', ->
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, Object.keys(@)]
+      })
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 2 })]
+      })
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3 })]
+      })
+      @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
+
+    it 'never mixes in an alternative base function', ->
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, Object.keys(@)]
+      })
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 2, base: -> 1000 })]
+      })
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3, base: -> 1000 })]
+      })
+      @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
+
 
 
 describe 'Q method', ->
