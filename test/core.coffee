@@ -83,13 +83,38 @@ describe 'Z method', ->
 
     @Z(b).then (resolved) ->
       resolved.should.have.keys ['v2']
-  
+
+  it 'returns an object without direct properties', ->
+    x = @Z(1)
+    keys = Object.keys(x)
+    keys.should.eql []
+
   describe 'mixin', ->
     
-    it 'returns an object without direct properties', ->
-      x = @Z(1)
-      keys = Object.keys(x)
-      keys.should.eql []
+    it 'allows new method to be added to the resulting promise', ->
+      @Z.mixin({
+        f1: (a1, a2) -> [@.value, a1, a2]
+      })
+      x = @Z(50)
+      val = x.f1(100, 200)
+      Object.keys(x).should.eql ['f1']
+      val.should.become [50, 100, 200]
+
+    it 'can be called multiple times to add multiple methods', ->
+      @Z.mixin({
+        f1: (a1, a2) -> [@.value, a1, a2]
+      })
+      @Z.mixin({
+        f2: (a1, a2) -> @.value + a1 + a2
+      })
+      x = @Z(50)
+      v1 = x.f1(100, 200)
+      v2 = x.f2(10, 20)
+      Object.keys(x).should.eql ['f1', 'f2']
+      Q.all([
+        v1.should.become [50, 100, 200]
+        v2.should.become 80
+      ])
 
 
 

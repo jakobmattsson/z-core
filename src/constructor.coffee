@@ -38,7 +38,8 @@ init = ->
     resultingPromise
 
   Z.mixin = (hash) ->
-    funcsToApply = hash
+    tools.pairs(hash).forEach ([name, func]) ->
+      funcsToApply[name] = func
     null
 
   Z
