@@ -37,10 +37,9 @@ init = ->
 
     resultingPromise
 
-  Z.mixin = (hash) ->
+  Z.mixin = tools.proc (hash) ->
     tools.pairs(hash).forEach ([name, func]) ->
       funcsToApply[name] = func
-    null
 
   Z
 

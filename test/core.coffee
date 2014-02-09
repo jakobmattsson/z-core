@@ -90,7 +90,13 @@ describe 'Z method', ->
     keys.should.eql []
 
   describe 'mixin', ->
-    
+
+    it 'returns undefined', ->
+      ret = @Z.mixin({
+        f1: -> 1
+      })
+      [ret].should.eql [undefined]
+
     it 'allows new method to be added to the resulting promise', ->
       @Z.mixin({
         f1: (a1, a2) -> [@.value, a1, a2]

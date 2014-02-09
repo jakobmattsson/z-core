@@ -29,3 +29,8 @@ exports.isPrimitive = (obj) ->
 exports.isArray = Array.isArray || (obj) -> Object.prototype.toString.call(obj) == "[object Array]"
 
 exports.objectCreate = Object.create
+
+exports.proc = (f) ->
+  ->
+    f.apply(this, arguments)
+    undefined
