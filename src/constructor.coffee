@@ -14,23 +14,37 @@ resolveCompletely = (unresolved) ->
 
 
 
-exports.creator = ({ log, extensions }) -> (obj) ->
+init = ->
 
-  extensions ?= {}
-  Z = exports.creator({ log, extensions })
-  overrideLayer = tools.objectCreate(resolveCompletely(obj))
-  p = tools.objectCreate(overrideLayer)
+  funcsToApply = {}
 
-  zeeify = (name) ->
-    superMethod = p[name]
-    overrideLayer[name] = (args...) ->
-      Z superMethod.apply(this, args)
+  Z = (obj) ->
+    overrideLayer = tools.objectCreate(resolveCompletely(obj))
+    p = tools.objectCreate(overrideLayer)
 
-  tools.pairs(extensions).forEach ([name, func]) ->
-    p[name] = (args...) ->
-      Z p.then (resolved) ->
-        func.apply({ value: resolved }, args)
+    zeeify = (name) ->
+      superMethod = p[name]
+      overrideLayer[name] = (args...) ->
+        Z superMethod.apply(this, args)
 
-  zeeify('get')
+    tools.pairs(funcsToApply).forEach ([name, func]) ->
+      p[name] = (args...) ->
+        Z p.then (resolved) ->
+          func.apply({ value: resolved }, args)
 
-  p
+    zeeify('get')
+
+    p
+
+  Z.mixin = (hash) ->
+    funcsToApply = hash
+    null
+
+  Z
+
+
+
+module.exports = do ->
+  Z = init()
+  Z.init = init
+  Z

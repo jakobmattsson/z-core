@@ -1,7 +1,7 @@
 Q = require 'q'
 jscov = require 'jscov'
 util = require 'util'
-{creator} = require jscov.cover('..', 'src', 'constructor')
+coreZ = require jscov.cover('..', 'src', 'constructor')
 
 
 
@@ -9,13 +9,10 @@ describe 'put', ->
   
   beforeEach ->
     @out = out = []
-    exts = {}
-
-    @Z = creator({
-      extensions: {
-        log: -> out.push(@.value)
-        put: -> out.push(util.inspect(@.value, { depth: null }))
-      }
+    @Z = coreZ.init()
+    @Z.mixin({
+      log: -> out.push(@.value)
+      put: -> out.push(util.inspect(@.value, { depth: null }))
     })
 
   it 'writes strings', ->
@@ -49,13 +46,10 @@ describe 'log', ->
 
   beforeEach ->
     @out = out = []
-    exts = {}
-
-    @Z = creator({
-      extensions: {
-        log: -> out.push(@.value)
-        put: -> out.push(util.inspect(@.value, { depth: null }))
-      }
+    @Z = coreZ.init()
+    @Z.mixin({
+      log: -> out.push(@.value)
+      put: -> out.push(util.inspect(@.value, { depth: null }))
     })
 
   it 'writes strings', ->
