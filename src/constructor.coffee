@@ -1,206 +1,55 @@
-Q = require 'q'
-_ = require 'underscore'
-_s = require 'underscore.string'
-util = require 'util'
+tools = require './tools'
+{pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
 resolveCompletely = (unresolved) ->
-  Q.when(unresolved).then (resolved) ->
+  resolveAll([unresolved]).then ([resolved]) ->
 
-    fs = ['isBoolean', 'isString', 'isNumber', 'isFunction', 'isRegExp', 'isDate']
+    return resolved if !resolved? || isPrimitive(resolved)
+    return resolveAll(resolved.map(resolveCompletely)) if isArray(resolved)
 
-    return resolved if !resolved? || fs.some (f) -> _[f](resolved)
-    return Q.all(resolved.map(resolveCompletely)) if Array.isArray(resolved)
+    unresolvedKeys = resolveAll(keys(resolved))
+    unresolvedValues = resolveAll(values(resolved).map(resolveCompletely))
 
-    unresolvedKeys = Q.all(_.keys(resolved))
-    unresolvedValues = Q.all(_.values(resolved).map(resolveCompletely))
-
-    Q.all([unresolvedKeys, unresolvedValues]).then ([resolvedKeys, resolvedValues]) ->
-      _.object(_.zip(resolvedKeys, resolvedValues))
+    resolveAll([unresolvedKeys, unresolvedValues]).then ([resolvedKeys, resolvedValues]) ->
+      object(resolvedKeys, resolvedValues)
 
 
-
-underscoreStringMethods = [
-  'startsWith'
-]
-
-underscoreMethods = [
-  # COLLECTIONS
-  'each', 'forEach'
-  'map', 'collect'
-  'reduce', 'inject', 'foldl', 'fold'
-  'reduceRight', 'foldr'
-  'find', 'detect'
-  'filter', 'select'
-  'where'
-  'findWhere'
-  'reject'
-  'every', 'all'
-  'some', 'any'
-  'contains', 'include'
-  'invoke'
-  'pluck'
-  'max'
-  'min'
-  'sortBy'
-  'groupBy'
-  'indexBy'
-  'countBy'
-  'shuffle'
-  'sample'
-  'toArray'
-  'size'
-
-  # ARRAYS
-  'first', 'head', 'take'
-  'initial'
-  'last'
-  'rest', 'tail', 'drop'
-  'compact'
-  'flatten'
-  'without'
-  'union'
-  'intersection'
-  'difference'
-  'uniq', 'unique'
-  'zip'
-  'object'
-  'indexOf'
-  'lastIndexOf'
-  'sortedIndex'
-  'range'
-
-  # FUNCTIONS
-  'bind'
-  'bindAll'
-  'partial'
-  'memoize'
-  'delay'
-  'defer'
-  'throttle'
-  'debounce'
-  'once'
-  'after'
-  'wrap'
-  'compose'
-
-  # OBJECTS
-  'keys'
-  'values'
-  'pairs'
-  'invert'
-  'functions', 'methods'
-  'extend'
-  'pick'
-  'omit'
-  'defaults'
-  'clone'
-  'tap'
-  'has'
-  'isEqual'
-  'isEmpty'
-  'isElement'
-  'isArray'
-  'isObject'
-  'isArguments'
-  'isFunction'
-  'isString'
-  'isNumber'
-  'isFinite'
-  'isBoolean'
-  'isDate'
-  'isRegExp'
-  'isNaN'
-  'isNull'
-  'isUndefined'
-
-  # UTILITY
-  # 'noConflict' -- not applicable
-  'identity'
-  'times'
-  'random'
-  # 'mixin' -- I have no idea how this would affect things
-  'uniqueId'
-  'escape'
-  'unescape'
-  'result'
-  'template'
-
-  # CHAINING -- Z has its own chaining
-  # 'chain'
-  # 'value'
-]
-
-genericMethods = ['toString']
-arrayMethods = ['reverse', 'concat', 'join', 'slice', 'findIndex']
-stringMethods = ['split']
-underscoreEachMethods = ['omit', 'pick', 'keys']
+overrides = ['get']
 
 
-exports.creator = ({ log }) -> (obj) ->
+init = ->
 
-  Z = exports.creator({ log })
-  overrideLayer = Object.create(resolveCompletely(obj))
-  p = Object.create(overrideLayer)
+  mixedIn = {}
 
-  def = (name, f) ->
-    p[name] = (args...) ->
-      Z p.then (resolved) ->
-        f(resolved, args...)
+  Z = (obj) ->
+    resolvedObject = resolveCompletely(obj)
+    overrideLayer = objectCreate(resolvedObject)
+    resultingPromise = objectCreate(overrideLayer)
 
-  zeeify = (name) ->
-    superMethod = p[name]
-    overrideLayer[name] = (args...) ->
-      Z superMethod.apply(this, args)
+    overrides.forEach (name) ->
+      overrideLayer[name] = (args...) ->
+        Z resolvedObject[name].apply(this, args)
 
-  underscoreMethods.forEach (methodName) ->
-    def methodName, (resolved, args...) ->
-      _(resolved)[methodName](args...)
+    pairs(mixedIn).forEach ([name, func]) ->
+      resultingPromise[name] = (args...) ->
+        Z resultingPromise.then (resolved) ->
+          func.apply({ value: resolved }, args)
 
-  underscoreEachMethods.forEach (methodName) ->
-    def (methodName + 'Each'), (resolved, args...) ->
-      resolved.map (e) -> _(e)[methodName](args...)
+    resultingPromise
 
-  genericMethods.forEach (methodName) ->
-    def methodName, (resolved, args...) ->
-      resolved[methodName].apply(resolved, args)
+  Z.mixin = proc (hash) ->
+    pairs(hash).forEach ([name, func]) ->
+      oldOne = mixedIn[name]
+      mixedIn[name] = ->
+        context = { value: @value }
+        context.base = oldOne if oldOne
+        func.apply(context, arguments)
 
-  arrayMethods.forEach (methodName) ->
-    def methodName, (resolved, args...) ->
-      if !Array.isArray(resolved)
-        throw new Error("Object must be an array in order to invoke '#{methodName}'")
-      resolved[methodName].apply(resolved, args)
-
-  underscoreStringMethods.forEach (methodName) ->
-    def methodName, (resolved, args...) ->
-      if typeof resolved != 'string'
-        throw new Error("Object must be a string in order to invoke '#{methodName}'")
-      _s[methodName](resolved, args...)
-
-  stringMethods.forEach (methodName) ->
-    def methodName, (resolved, args...) ->
-      if typeof resolved != 'string'
-        throw new Error("Object must be a string in order to invoke '#{methodName}'")
-      resolved[methodName].apply(resolved, args)
-
-  def 'log', (resolved) ->
-    log(resolved)
-
-  def 'put', (resolved) ->
-    log(util.inspect(resolved, { depth: null }))
-
-  zeeify('get')
-
-  p
+  Z
 
 
 
-exports.methods = -> _.flatten [
-  underscoreMethods
-  genericMethods
-  arrayMethods
-  stringMethods
-  underscoreStringMethods
-  'log'
-  'put'
-  underscoreEachMethods.map((x) -> x + 'Each')
-]
+module.exports = do ->
+  Z = init()
+  Z.init = init
+  Z
