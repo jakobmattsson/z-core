@@ -13,28 +13,29 @@ resolveCompletely = (unresolved) ->
       tools.object(resolvedKeys, resolvedValues)
 
 
+overrides = ['get']
+
 
 init = ->
 
   funcsToApply = {}
 
   Z = (obj) ->
-    overrideLayer = tools.objectCreate(resolveCompletely(obj))
-    p = tools.objectCreate(overrideLayer)
+    resolvedObject = resolveCompletely(obj)
+    overrideLayer = tools.objectCreate(resolvedObject)
+    resultingPromise = tools.objectCreate(overrideLayer)
 
-    zeeify = (name) ->
-      superMethod = p[name]
+    overrides.forEach (name) ->
+      superMethod = resolvedObject[name]
       overrideLayer[name] = (args...) ->
         Z superMethod.apply(this, args)
 
     tools.pairs(funcsToApply).forEach ([name, func]) ->
-      p[name] = (args...) ->
-        Z p.then (resolved) ->
+      resultingPromise[name] = (args...) ->
+        Z resultingPromise.then (resolved) ->
           func.apply({ value: resolved }, args)
 
-    zeeify('get')
-
-    p
+    resultingPromise
 
   Z.mixin = (hash) ->
     funcsToApply = hash
