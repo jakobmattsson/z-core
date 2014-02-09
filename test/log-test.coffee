@@ -11,8 +11,8 @@ describe 'put', ->
     @out = out = []
     @Z = coreZ.init()
     @Z.mixin({
-      log: -> out.push(@.value)
-      put: -> out.push(util.inspect(@.value, { depth: null }))
+      log: -> out.push(@value)
+      put: -> out.push(util.inspect(@value, { depth: null }))
     })
 
   it 'writes strings', ->
@@ -48,8 +48,8 @@ describe 'log', ->
     @out = out = []
     @Z = coreZ.init()
     @Z.mixin({
-      log: -> out.push(@.value)
-      put: -> out.push(util.inspect(@.value, { depth: null }))
+      log: -> out.push(@value)
+      put: -> out.push(util.inspect(@value, { depth: null }))
     })
 
   it 'writes strings', ->

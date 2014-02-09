@@ -122,31 +122,31 @@ exts = {}
 
 underscoreStringMethods.forEach (method) ->
   exts[method] = (args...) ->
-    _s[method](@.value, args...)
+    _s[method](@value, args...)
 
 underscoreEachMethods.forEach (method) ->
   exts[method + 'Each'] = (args...) ->
-    @.value.map (e) -> _(e)[method](args...)
+    @value.map (e) -> _(e)[method](args...)
 
 underscoreMethods.forEach (method) ->
   exts[method] = (args...) ->
-    _(@.value)[method](args...)
+    _(@value)[method](args...)
 
 genericMethods.forEach (methodName) ->
   exts[methodName] = (args...) ->
-    @.value[methodName](args...)
+    @value[methodName](args...)
 
 arrayMethods.forEach (methodName) ->
   exts[methodName] = (args...) ->
-    if !Array.isArray(@.value)
+    if !Array.isArray(@value)
       throw new Error("Object must be an array in order to invoke '#{methodName}'")
-    @.value[methodName](args...)
+    @value[methodName](args...)
 
 stringMethods.forEach (methodName) ->
   exts[methodName] = (args...) ->
-    if typeof @.value != 'string'
+    if typeof @value != 'string'
       throw new Error("Object must be a string in order to invoke '#{methodName}'")
-    @.value[methodName](args...)
+    @value[methodName](args...)
 
 
 
