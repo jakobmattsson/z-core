@@ -1,7 +1,7 @@
 Q = require 'q'
 jscov = require 'jscov'
 util = require 'util'
-coreZ = require jscov.cover('..', 'src', 'index')
+coreZ = require jscov.cover('..', 'lib', 'index')
 
 
 

@@ -1,6 +1,6 @@
 Q = require 'q'
 jscov = require 'jscov'
-coreZ = require jscov.cover('..', 'src', 'index')
+coreZ = require jscov.cover('..', 'lib', 'index')
 
 describe 'root Z', ->
 
