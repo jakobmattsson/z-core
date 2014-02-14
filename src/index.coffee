@@ -1,3 +1,4 @@
+Q = require 'q'
 tools = require './tools'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
@@ -52,4 +53,5 @@ init = ->
 module.exports = do ->
   Z = init()
   Z.init = init
+  Z.Q = Q
   Z

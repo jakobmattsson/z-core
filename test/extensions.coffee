@@ -1,8 +1,8 @@
 Q = require 'q'
 _ = require 'underscore'
 _s = require 'underscore.string'
-jscov = require 'jscov'
-Z = require(jscov.cover('..', 'lib', 'index')).init()
+coreZ = requireSource 'index'
+Z = coreZ.init()
 
 
 genericMethods = ['toString']
