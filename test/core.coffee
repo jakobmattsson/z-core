@@ -213,3 +213,16 @@ describe 'Q method', ->
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
       mets = methodsList.sort (a, b) -> a.localeCompare(b)
       keys.should.eql mets
+
+  describe 'then', ->
+
+    it 'returns an object that has the expected functions', ->
+      @Z.mixin({
+        f1: ->
+        f2: ->
+      })
+      methodsList = ['f1', 'f2']
+      x = @Z(5).then((x) -> x * 10)
+      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
+      mets = methodsList.sort (a, b) -> a.localeCompare(b)
+      keys.should.eql mets

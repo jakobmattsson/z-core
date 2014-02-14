@@ -14,7 +14,7 @@ resolveCompletely = (unresolved) ->
       object(resolvedKeys, resolvedValues)
 
 
-overrides = ['get']
+overrides = ['get', 'then']
 
 
 init = ->
