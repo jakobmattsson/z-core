@@ -50,8 +50,16 @@ init = ->
 
 
 
-module.exports = do ->
+makeZ = ->
   Z = init()
   Z.init = init
   Z.Q = Q
   Z
+
+
+
+if typeof window != 'undefined' && typeof window.require == 'undefined'
+  window.Z = makeZ()
+
+if typeof module != 'undefined'
+  module.exports = makeZ()
