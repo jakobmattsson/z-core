@@ -1,5 +1,5 @@
 {
-  "name": "zee",
+  "name": "Z-core",
   "description": "Utility library for JavaScript promises",
   "keywords": [
     "promises",
@@ -15,9 +15,9 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/jakobmattsson/Z"
+    "url": "http://github.com/jakobmattsson/Z-core"
   },
-  "bugs": "http://github.com/jakobmattsson/Z/issues",
+  "bugs": "http://github.com/jakobmattsson/Z-core/issues",
   "bucketful": {
     "bucket": "z-test.jdevab.com",
     "source": "browsertest",
