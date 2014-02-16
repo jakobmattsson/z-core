@@ -18,7 +18,42 @@
     "url": "http://github.com/jakobmattsson/Z"
   },
   "bugs": "http://github.com/jakobmattsson/Z/issues",
+  "bucketful": {
+    "bucket": "z-test.jdevab.com",
+    "source": "browsertest",
+    "region": "eu-west-1"
+  },
+  "chalcogen": {
+    "timeout": 60000,
+    "domain": "z-test.jdevab.com.s3-website-eu-west-1.amazonaws.com",
+    "path": "/index.html?wait",
+    "environments": [{
+      "browserName": "internet explorer",
+      "platform": "Windows 7",
+      "version": "9"
+    }, {
+      "browserName": "internet explorer",
+      "platform": "Windows 8",
+      "version": "10"
+    }, {
+      "browserName": "chrome",
+      "platform": "Windows 8.1",
+      "version": "26"
+    }, {
+      "browserName": "firefox",
+      "platform": "Windows 8",
+      "version": "26"
+    }, {
+      "browserName": "safari",
+      "platform": "OS X 10.8",
+      "version": "6"
+    }]
+  },
   "scripts": {
+    "make-dist": "npm test && mkdir -p dist && browserify lib/index.js > dist/latest.js",
+    "prepare-browser-tests": "sh scripts/prepare-browser-tests.sh",
+    "deploy-browser-tests": "npm run prepare-browser-tests && bucketful",
+    "test-browser-remote": "npm run deploy-browser-tests && chalcogen --platform saucelabs",
     "coverage": "jscov --expand --conditionals src .cov && JSCOV=.cov mocha --reporter mocha-term-cov-reporter",
     "test": "mocha --grep \"$TESTS\"",
     "pretest": "coffee -co lib src",
@@ -29,6 +64,9 @@
     "node": ">= 0.10 < 0.11"
   },
   "devDependencies": {
+    "bucketful": "^0.15.1",
+    "coffeeify": "^0.6.0",
+    "chalcogen": "^0.4.0",
     "jscov": "^0.5.7",
     "mocha": "^1.12.1",
     "mocha-term-cov-reporter": "^0.2.0",

@@ -1,3 +1,4 @@
+Q = require 'q'
 tools = require './tools'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
@@ -32,7 +33,7 @@ init = ->
 
     pairs(mixedIn).forEach ([name, func]) ->
       resultingPromise[name] = (args...) ->
-        Z resultingPromise.then (resolved) ->
+        resultingPromise.then (resolved) ->
           func.apply({ value: resolved }, args)
 
     resultingPromise
@@ -49,7 +50,16 @@ init = ->
 
 
 
-module.exports = do ->
+makeZ = ->
   Z = init()
   Z.init = init
+  Z.Q = Q
   Z
+
+
+
+if typeof window != 'undefined' && typeof window.require == 'undefined'
+  window.Z = makeZ()
+
+if typeof module != 'undefined'
+  module.exports = makeZ()

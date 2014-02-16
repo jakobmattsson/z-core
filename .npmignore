@@ -4,4 +4,3 @@ test
 .npmignore
 .travis.yml
 node_modules
-

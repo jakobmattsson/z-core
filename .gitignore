@@ -1,4 +1,6 @@
 node_modules
 lib
 .cov
-
+browsertest
+config.json
+Z-core.sublime-workspace
