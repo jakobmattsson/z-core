@@ -77,6 +77,6 @@
   "dependencies": {
     "q": "^1.0.0",
     "underscore.string": "^2.3.3",
-    "underscore": "^1.5.2"
+    "underscore": "^1.6.0"
   }
 }

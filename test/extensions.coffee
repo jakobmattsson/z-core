@@ -203,7 +203,7 @@ describe 'underscore method', ->
       Z([1,2,3]).keys().should.become ["0", "1", "2"]
 
     it 'fails when executed on a string', ->
-      Z("foobar").keys().should.be.rejected
+      Z("foobar").keys().should.become []
 
   describe 'bind', ->
 
