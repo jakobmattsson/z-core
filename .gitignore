@@ -3,4 +3,5 @@ lib
 .cov
 browsertest
 config.json
+*.log
 z-core.sublime-workspace
