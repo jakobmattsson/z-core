@@ -1,4 +1,3 @@
-Q = require 'q'
 util = require 'util'
 coreZ = requireSource 'index'
 

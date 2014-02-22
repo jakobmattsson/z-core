@@ -1,4 +1,3 @@
-Q = require 'q'
 coreZ = requireSource 'index'
 
 describe 'root Z', ->
@@ -7,7 +6,7 @@ describe 'root Z', ->
     coreZ.should.be.a 'function'
 
   it 'has an init and a mixin function', ->
-    expectedFunctions = ['Q', 'init', 'mixin']
+    expectedFunctions = ['init', 'mixin']
 
     keys = Object.keys(coreZ)
     sortedKeys = keys.sort()
@@ -23,16 +22,6 @@ describe 'Z method', ->
   beforeEach ->
     @Z = coreZ.init()
 
-  it 'returns an object with a single method', ->
-    prototypeOfQ = coreZ.Q.makePromise.prototype
-    x = @Z(1)
-    prototypeOfQ.isPrototypeOf(x).should.eql true
-
-  it 'returns an object that is inherited from Q', ->
-    prototypeOfQ = coreZ.Q.makePromise.prototype
-    x = @Z(1)
-    prototypeOfQ.isPrototypeOf(x).should.eql true
-
   it 'returns an object without direct properties', ->
     x = @Z(1)
     keys = Object.keys(x)
@@ -45,7 +34,7 @@ describe 'Z method', ->
 
   it 'retains nested functions', ->
     obj = @Z({ a: 1, f: (x) -> x*x })
-    result = obj.get('f').then (fResolved) -> fResolved(2)
+    result = obj.then (p) -> p.f(2)
     result.should.become 4
 
   it 'retains top-level regexps', ->
@@ -55,7 +44,7 @@ describe 'Z method', ->
 
   it 'retains nested regexps', ->
     obj = @Z({ a: 1, f: /foo/ })
-    result = obj.get('f').then (fResolved) -> fResolved.test("foobar")
+    result = obj.then (fResolved) -> fResolved.f.test("foobar")
     result.should.become true
 
   it 'retains top-level dates', ->
@@ -65,7 +54,7 @@ describe 'Z method', ->
 
   it 'retains nested dates', ->
     obj = @Z({ a: 1, f: new Date()})
-    result = obj.get('f').then (d) -> d.getTime()
+    result = obj.then (d) -> d.f.getTime()
     result.should.eventually.be.a 'number'
 
   it 'does not copy protoype chains when wrapping objects', ->
@@ -88,6 +77,19 @@ describe 'Z method', ->
     keys = Object.keys(x)
     keys.should.eql []
 
+  describe 'then', ->
+
+    it 'returns an object that has the expected functions', ->
+      @Z.mixin({
+        f1: ->
+        f2: ->
+      })
+      methodsList = ['f1', 'f2']
+      x = @Z(5).then((x) -> x * 10)
+      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
+      mets = methodsList.sort (a, b) -> a.localeCompare(b)
+      keys.should.eql mets
+
   describe 'mixin', ->
 
     it 'returns undefined', ->
@@ -105,7 +107,7 @@ describe 'Z method', ->
       Object.keys(x).should.eql ['f1']
       val.should.become [50, 100, 200]
 
-    it 'can be called multiple times to add multiple methods', ->
+    it 'can be called multiple times to add multiple methods (1)', ->
       @Z.mixin({
         f1: (a1, a2) -> [@value, a1, a2]
       })
@@ -116,10 +118,20 @@ describe 'Z method', ->
       v1 = x.f1(100, 200)
       v2 = x.f2(10, 20)
       Object.keys(x).should.eql ['f1', 'f2']
-      Q.all([
-        v1.should.become [50, 100, 200]
-        v2.should.become 80
-      ])
+      v1.should.become [50, 100, 200]
+
+    it 'can be called multiple times to add multiple methods (2)', ->
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, a1, a2]
+      })
+      @Z.mixin({
+        f2: (a1, a2) -> @value + a1 + a2
+      })
+      x = @Z(50)
+      v1 = x.f1(100, 200)
+      v2 = x.f2(10, 20)
+      Object.keys(x).should.eql ['f1', 'f2']
+      v2.should.become 80
 
     it 'can mixin the same function multiple times and passes the previous as context to the next', ->
       @Z.mixin({
@@ -158,70 +170,3 @@ describe 'Z method', ->
         f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3, base: -> 1000 })]
       })
       @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
-
-
-
-describe 'Q method', ->
-
-  beforeEach ->
-    @Z = coreZ.init()
-
-  describe 'get', ->
-
-    it 'retrieves the value of a property (just like in Q)', ->
-      bValue = [1,2]
-      arr = @Z({ a: { b: bValue } })
-      filtered = arr.get('a')
-      filtered.should.become { b: bValue }
-
-    it 'retrieves the value of a property as a reference (just like in Q)', ->
-      bValue = [1,2]
-      arr = @Z({ a: { b: bValue } })
-      filtered = arr.get('a')
-      bValue.push(3)
-      filtered.should.become { b: bValue }
-
-    it 'returns an object that is inherited from Q', ->
-      prototypeOfQ = coreZ.Q.makePromise.prototype
-      x = @Z({ a: { b: 1 } }).get('a')
-      prototypeOfQ.isPrototypeOf(x).should.eql true
-
-    it 'returns an object that is inherited from Q even when called multiple times', ->
-      prototypeOfQ = coreZ.Q.makePromise.prototype
-      x = @Z({ a: { b: { c: 1 } } }).get('a').get('b')
-      prototypeOfQ.isPrototypeOf(x).should.eql true
-
-    it 'returns an object that has the expected functions', ->
-      @Z.mixin({
-        f1: ->
-        f2: ->
-      })
-      methodsList = ['f1', 'f2']
-      x = @Z({ a: { b: 1 }}).get('a')
-      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets
-
-    it 'returns an object that has the expected functions even when called multiple times', ->
-      @Z.mixin({
-        f1: ->
-        f2: ->
-      })
-      methodsList = ['f1', 'f2']
-      x = @Z({ a: { b: { c: 1 } }}).get('a').get('b')
-      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets
-
-  describe 'then', ->
-
-    it 'returns an object that has the expected functions', ->
-      @Z.mixin({
-        f1: ->
-        f2: ->
-      })
-      methodsList = ['f1', 'f2']
-      x = @Z(5).then((x) -> x * 10)
-      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets

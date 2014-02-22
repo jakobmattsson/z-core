@@ -1,4 +1,3 @@
-Q = require 'q'
 tools = require './tools'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
@@ -15,7 +14,7 @@ resolveCompletely = (unresolved) ->
       object(resolvedKeys, resolvedValues)
 
 
-overrides = ['get', 'then']
+overrides = ['then']
 
 
 init = ->
@@ -53,7 +52,6 @@ init = ->
 makeZ = ->
   Z = init()
   Z.init = init
-  Z.Q = Q
   Z
 
 
