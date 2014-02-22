@@ -1,5 +1,5 @@
 {
-  "name": "Z-core",
+  "name": "z-core",
   "description": "Utility library for JavaScript promises",
   "keywords": [
     "promises",
@@ -15,9 +15,9 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/jakobmattsson/Z-core"
+    "url": "http://github.com/jakobmattsson/z-core"
   },
-  "bugs": "http://github.com/jakobmattsson/Z-core/issues",
+  "bugs": "http://github.com/jakobmattsson/z-core/issues",
   "bucketful": {
     "bucket": "z-test.jdevab.com",
     "source": "browsertest",
