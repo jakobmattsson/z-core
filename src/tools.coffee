@@ -1,4 +1,4 @@
-Q = require 'q'
+{Promise} = require 'es6-promise'
 
 exports.pairs = (obj) ->
   for own key, value of obj
@@ -19,7 +19,7 @@ exports.object = (keys, values) ->
   out
 
 exports.resolveAll = (list) ->
-  Q.all(list)
+  Promise.all(list)
 
 exports.isPrimitive = (obj) ->
   types = ['Function', 'String', 'Number', 'Date', 'RegExp', 'Boolean']
