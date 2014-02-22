@@ -9,7 +9,7 @@
     "client",
     "browser"
   ],
-  "version": "0.3.2",
+  "version": "0.4.0",
   "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobmattsson.se)",
   "license": "MIT",
   "main": "./lib/index.js",
@@ -18,7 +18,10 @@
     "url": "http://github.com/jakobmattsson/z-core"
   },
   "bugs": "http://github.com/jakobmattsson/z-core/issues",
-  "files": ["lib", "LICENSE"],
+  "files": [
+    "lib",
+    "LICENSE"
+  ],
   "bucketful": {
     "bucket": "z-test.jdevab.com",
     "source": "browsertest",
@@ -28,27 +31,33 @@
     "timeout": 60000,
     "domain": "z-test.jdevab.com.s3-website-eu-west-1.amazonaws.com",
     "path": "/index.html?wait",
-    "environments": [{
-      "browserName": "internet explorer",
-      "platform": "Windows 7",
-      "version": "9"
-    }, {
-      "browserName": "internet explorer",
-      "platform": "Windows 8",
-      "version": "10"
-    }, {
-      "browserName": "chrome",
-      "platform": "Windows 8.1",
-      "version": "26"
-    }, {
-      "browserName": "firefox",
-      "platform": "Windows 8",
-      "version": "26"
-    }, {
-      "browserName": "safari",
-      "platform": "OS X 10.8",
-      "version": "6"
-    }]
+    "environments": [
+      {
+        "browserName": "internet explorer",
+        "platform": "Windows 7",
+        "version": "9"
+      },
+      {
+        "browserName": "internet explorer",
+        "platform": "Windows 8",
+        "version": "10"
+      },
+      {
+        "browserName": "chrome",
+        "platform": "Windows 8.1",
+        "version": "26"
+      },
+      {
+        "browserName": "firefox",
+        "platform": "Windows 8",
+        "version": "26"
+      },
+      {
+        "browserName": "safari",
+        "platform": "OS X 10.8",
+        "version": "6"
+      }
+    ]
   },
   "engines": {
     "npm": ">= 1.3 < 2",
