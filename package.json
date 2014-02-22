@@ -75,8 +75,6 @@
     "coffee-script": "^1.7.1"
   },
   "dependencies": {
-    "es6-promise": "^0.1.1",
-    "underscore.string": "^2.3.3",
-    "underscore": "^1.6.0"
+    "es6-promise": "^0.1.1"
   }
 }
