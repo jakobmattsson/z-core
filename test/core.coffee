@@ -34,7 +34,7 @@ describe 'Z method', ->
 
   it 'retains nested functions', ->
     obj = @Z({ a: 1, f: (x) -> x*x })
-    result = obj.get('f').then (fResolved) -> fResolved(2)
+    result = obj.then (p) -> p.f(2)
     result.should.become 4
 
   it 'retains top-level regexps', ->
@@ -44,7 +44,7 @@ describe 'Z method', ->
 
   it 'retains nested regexps', ->
     obj = @Z({ a: 1, f: /foo/ })
-    result = obj.get('f').then (fResolved) -> fResolved.test("foobar")
+    result = obj.then (fResolved) -> fResolved.f.test("foobar")
     result.should.become true
 
   it 'retains top-level dates', ->
@@ -54,7 +54,7 @@ describe 'Z method', ->
 
   it 'retains nested dates', ->
     obj = @Z({ a: 1, f: new Date()})
-    result = obj.get('f').then (d) -> d.getTime()
+    result = obj.then (d) -> d.f.getTime()
     result.should.eventually.be.a 'number'
 
   it 'does not copy protoype chains when wrapping objects', ->
@@ -164,43 +164,6 @@ describe 'Q method', ->
 
   beforeEach ->
     @Z = coreZ.init()
-
-  describe 'get', ->
-
-    it 'retrieves the value of a property (just like in Q)', ->
-      bValue = [1,2]
-      arr = @Z({ a: { b: bValue } })
-      filtered = arr.get('a')
-      filtered.should.become { b: bValue }
-
-    it 'retrieves the value of a property as a reference (just like in Q)', ->
-      bValue = [1,2]
-      arr = @Z({ a: { b: bValue } })
-      filtered = arr.get('a')
-      bValue.push(3)
-      filtered.should.become { b: bValue }
-
-    it 'returns an object that has the expected functions', ->
-      @Z.mixin({
-        f1: ->
-        f2: ->
-      })
-      methodsList = ['f1', 'f2']
-      x = @Z({ a: { b: 1 }}).get('a')
-      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets
-
-    it 'returns an object that has the expected functions even when called multiple times', ->
-      @Z.mixin({
-        f1: ->
-        f2: ->
-      })
-      methodsList = ['f1', 'f2']
-      x = @Z({ a: { b: { c: 1 } }}).get('a').get('b')
-      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets
 
   describe 'then', ->
 

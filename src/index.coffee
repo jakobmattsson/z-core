@@ -30,10 +30,6 @@ init = ->
       overrideLayer[name] = (args...) ->
         Z resolvedObject[name].apply(this, args)
 
-    overrideLayer.get = (name) ->
-      overrideLayer.then (resolved) ->
-        resolved[name]
-
     pairs(mixedIn).forEach ([name, func]) ->
       resultingPromise[name] = (args...) ->
         resultingPromise.then (resolved) ->
