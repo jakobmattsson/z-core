@@ -15,7 +15,7 @@ resolveCompletely = (unresolved) ->
       object(resolvedKeys, resolvedValues)
 
 
-overrides = ['get', 'then']
+overrides = ['then']
 
 
 init = ->
@@ -30,6 +30,10 @@ init = ->
     overrides.forEach (name) ->
       overrideLayer[name] = (args...) ->
         Z resolvedObject[name].apply(this, args)
+
+    overrideLayer.get = (name) ->
+      overrideLayer.then (resolved) ->
+        resolved[name]
 
     pairs(mixedIn).forEach ([name, func]) ->
       resultingPromise[name] = (args...) ->
