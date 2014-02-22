@@ -1,4 +1,3 @@
-Q = require 'q'
 tools = require './tools'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
@@ -57,7 +56,6 @@ init = ->
 makeZ = ->
   Z = init()
   Z.init = init
-  Z.Q = Q
   Z
 
 

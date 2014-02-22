@@ -1,4 +1,3 @@
-Q = require 'q'
 coreZ = requireSource 'index'
 
 describe 'root Z', ->
@@ -7,7 +6,7 @@ describe 'root Z', ->
     coreZ.should.be.a 'function'
 
   it 'has an init and a mixin function', ->
-    expectedFunctions = ['Q', 'init', 'mixin']
+    expectedFunctions = ['init', 'mixin']
 
     keys = Object.keys(coreZ)
     sortedKeys = keys.sort()
@@ -22,16 +21,6 @@ describe 'Z method', ->
   
   beforeEach ->
     @Z = coreZ.init()
-
-  it 'returns an object with a single method', ->
-    prototypeOfQ = coreZ.Q.makePromise.prototype
-    x = @Z(1)
-    prototypeOfQ.isPrototypeOf(x).should.eql true
-
-  it 'returns an object that is inherited from Q', ->
-    prototypeOfQ = coreZ.Q.makePromise.prototype
-    x = @Z(1)
-    prototypeOfQ.isPrototypeOf(x).should.eql true
 
   it 'returns an object without direct properties', ->
     x = @Z(1)
@@ -190,16 +179,6 @@ describe 'Q method', ->
       filtered = arr.get('a')
       bValue.push(3)
       filtered.should.become { b: bValue }
-
-    it 'returns an object that is inherited from Q', ->
-      prototypeOfQ = coreZ.Q.makePromise.prototype
-      x = @Z({ a: { b: 1 } }).get('a')
-      prototypeOfQ.isPrototypeOf(x).should.eql true
-
-    it 'returns an object that is inherited from Q even when called multiple times', ->
-      prototypeOfQ = coreZ.Q.makePromise.prototype
-      x = @Z({ a: { b: { c: 1 } } }).get('a').get('b')
-      prototypeOfQ.isPrototypeOf(x).should.eql true
 
     it 'returns an object that has the expected functions', ->
       @Z.mixin({
