@@ -77,6 +77,19 @@ describe 'Z method', ->
     keys = Object.keys(x)
     keys.should.eql []
 
+  describe 'then', ->
+
+    it 'returns an object that has the expected functions', ->
+      @Z.mixin({
+        f1: ->
+        f2: ->
+      })
+      methodsList = ['f1', 'f2']
+      x = @Z(5).then((x) -> x * 10)
+      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
+      mets = methodsList.sort (a, b) -> a.localeCompare(b)
+      keys.should.eql mets
+
   describe 'mixin', ->
 
     it 'returns undefined', ->
@@ -157,23 +170,3 @@ describe 'Z method', ->
         f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3, base: -> 1000 })]
       })
       @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
-
-
-
-describe 'Q method', ->
-
-  beforeEach ->
-    @Z = coreZ.init()
-
-  describe 'then', ->
-
-    it 'returns an object that has the expected functions', ->
-      @Z.mixin({
-        f1: ->
-        f2: ->
-      })
-      methodsList = ['f1', 'f2']
-      x = @Z(5).then((x) -> x * 10)
-      keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
-      mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets
