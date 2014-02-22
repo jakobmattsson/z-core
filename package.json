@@ -18,6 +18,7 @@
     "url": "http://github.com/jakobmattsson/z-core"
   },
   "bugs": "http://github.com/jakobmattsson/z-core/issues",
+  "files": ["lib", "LICENSE"],
   "bucketful": {
     "bucket": "z-test.jdevab.com",
     "source": "browsertest",
