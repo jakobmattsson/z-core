@@ -6,7 +6,7 @@ describe 'root Z', ->
     coreZ.should.be.a 'function'
 
   it 'has an init and a mixin function', ->
-    expectedFunctions = ['init', 'mixin']
+    expectedFunctions = ['bindAsync', 'bindSync', 'init', 'mixin']
 
     keys = Object.keys(coreZ)
     sortedKeys = keys.sort()
@@ -14,6 +14,70 @@ describe 'root Z', ->
 
     expectedFunctions.forEach (expectedFunction) ->
       coreZ[expectedFunction].should.be.a 'function'
+
+
+
+describe 'Z bind async', ->
+
+  beforeEach ->
+    @Z = coreZ.init()
+
+  global = do -> this
+
+  divider = (a, b, callback) ->
+    throw new Error("Division by zero") if b == 0
+    setTimeout =>
+      extra = this?.extraValue || 0
+      callback(null, extra + a / b)
+    , 10
+
+  it 'wraps a function to return a promise', ->
+    pDivider = @Z.bindAsync(divider)
+    pDivider(10, 2).should.become 5
+
+  it 'wraps a function with a bound context to return a promise', ->
+    pDivider = @Z.bindAsync(divider, { extraValue: 6 })
+    pDivider(20, 2).should.become 16
+
+  it 'resolves promise arguments before calling the function', ->
+    pDivider = @Z.bindAsync(divider)
+    value1 = @Z(10)
+    pDivider(value1, 2).should.become 5
+
+  it 'rejects the returned promise if the function throws', ->
+    pDivider = @Z.bindAsync(divider)
+    pDivider(10, 0).should.be.rejected
+
+
+
+describe 'Z bind sync', ->
+
+  beforeEach ->
+    @Z = coreZ.init()
+
+  global = do -> this
+
+  divider = (a, b) ->
+    throw new Error("Division by zero") if b == 0
+    extra = this.extraValue || 0
+    extra + a / b
+
+  it 'wraps a function to return a promise', ->
+    pDivider = @Z.bindSync(divider)
+    pDivider(10, 2).should.become 5
+
+  it 'wraps a function with a bound context to return a promise', ->
+    pDivider = @Z.bindSync(divider, { extraValue: 1 })
+    pDivider(20, 2).should.become 11
+
+  it 'resolves promise arguments before calling the function', ->
+    pDivider = @Z.bindSync(divider)
+    value1 = @Z(10)
+    pDivider(value1, 2).should.become 5
+
+  it 'rejects the returned promise if the function throws', ->
+    pDivider = @Z.bindSync(divider)
+    pDivider(10, 0).should.be.rejected
 
 
 

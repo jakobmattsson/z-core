@@ -1,4 +1,5 @@
 tools = require './tools'
+{Promise} = require 'es6-promise'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
 resolveCompletely = (unresolved) ->
@@ -44,6 +45,32 @@ init = ->
         context = { value: @value }
         context.base = oldOne if oldOne
         func.apply(context, arguments)
+
+  Z.bindSync = (func, context) ->
+    (unresolvedArgs...) ->
+      Z(unresolvedArgs).then (args) =>
+        func.apply(context ? this, args)
+
+  Z.bindAsync = (func, context) ->
+
+    (unresolvedArgs...) ->
+      ctx = context ? this
+
+      Z(unresolvedArgs).then (args) ->
+        new Promise (resolve, reject) ->
+
+          args.push (err, result...) ->
+            if err?
+              reject(err)
+            else if result.length == 1
+              resolve(result[0])
+            else
+              resolve(result)
+
+          try
+            func.apply(ctx, args)
+          catch ex
+            reject(ex)
 
   Z
 
