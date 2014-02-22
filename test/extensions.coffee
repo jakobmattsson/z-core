@@ -1,4 +1,3 @@
-Q = require 'q'
 _ = require 'underscore'
 _s = require 'underscore.string'
 coreZ = requireSource 'index'

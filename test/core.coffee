@@ -105,7 +105,7 @@ describe 'Z method', ->
       Object.keys(x).should.eql ['f1']
       val.should.become [50, 100, 200]
 
-    it 'can be called multiple times to add multiple methods', ->
+    it 'can be called multiple times to add multiple methods (1)', ->
       @Z.mixin({
         f1: (a1, a2) -> [@value, a1, a2]
       })
@@ -116,10 +116,20 @@ describe 'Z method', ->
       v1 = x.f1(100, 200)
       v2 = x.f2(10, 20)
       Object.keys(x).should.eql ['f1', 'f2']
-      Q.all([
-        v1.should.become [50, 100, 200]
-        v2.should.become 80
-      ])
+      v1.should.become [50, 100, 200]
+
+    it 'can be called multiple times to add multiple methods (2)', ->
+      @Z.mixin({
+        f1: (a1, a2) -> [@value, a1, a2]
+      })
+      @Z.mixin({
+        f2: (a1, a2) -> @value + a1 + a2
+      })
+      x = @Z(50)
+      v1 = x.f1(100, 200)
+      v2 = x.f2(10, 20)
+      Object.keys(x).should.eql ['f1', 'f2']
+      v2.should.become 80
 
     it 'can mixin the same function multiple times and passes the previous as context to the next', ->
       @Z.mixin({
