@@ -79,3 +79,11 @@ There are several mixin packages available for your convenience:
 And even bundles where certain set of mixins have already been applied:
 
 * [z-std-pack](https://github.com/jakobmattsson/z-std-pack): Z, builtins and underscore bundled together.
+
+
+
+### Additional resources
+
+[Slides from 2014-02-25 presentation on Z](https://speakerdeck.com/jakobmattsson/how-to-star-actually-star-use-promises-in-javascript)
+
+[Code from the above presentation](https://github.com/jakobmattsson/z-presentation)
