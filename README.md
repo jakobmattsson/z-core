@@ -9,6 +9,9 @@ Use npm: `npm install z-core`
 
 Or bower: (not uploaded yet)
 
+Or download it manually from the `dist` folder of this repo.
+
+
 
 ### Wrapping functions to accept promises as parameters and return promises
 
