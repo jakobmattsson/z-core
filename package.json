@@ -64,6 +64,7 @@
     "node": ">= 0.10 < 0.11"
   },
   "devDependencies": {
+    "browserify": "^3.30.2",
     "bucketful": "^0.15.1",
     "coffeeify": "^0.6.0",
     "chalcogen": "^0.4.0",
