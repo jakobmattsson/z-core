@@ -234,3 +234,9 @@ describe 'Z method', ->
         f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3, base: -> 1000 })]
       })
       @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
+
+    it 'resolves arguments that are promises before running the mixin', ->
+      @Z.mixin({
+        f: (v) -> v.should.eql 56
+      })
+      @Z(1).f(@Z(56))

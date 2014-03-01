@@ -34,7 +34,8 @@ init = ->
     pairs(mixedIn).forEach ([name, func]) ->
       resultingPromise[name] = (args...) ->
         resultingPromise.then (resolved) ->
-          func.apply({ value: resolved }, args)
+          resolveCompletely(args).then (args) ->
+            func.apply({ value: resolved }, args)
 
     resultingPromise
 
