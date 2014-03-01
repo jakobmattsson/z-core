@@ -2,17 +2,16 @@ tools = require './tools'
 {Promise} = require 'es6-promise'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
-resolveCompletely = (unresolved) ->
+resolveCompletely = (unresolved, depth) ->
   resolveAll([unresolved]).then ([resolved]) ->
 
-    return resolved if !resolved? || isPrimitive(resolved)
-    return resolveAll(resolved.map(resolveCompletely)) if isArray(resolved)
+    return resolved if depth <= 0 || !resolved? || isPrimitive(resolved)
+    return resolveAll(resolved.map((x) -> resolveCompletely(x, depth-1) )) if isArray(resolved)
 
-    unresolvedKeys = resolveAll(keys(resolved))
-    unresolvedValues = resolveAll(values(resolved).map(resolveCompletely))
+    unresolvedValues = resolveAll(values(resolved).map((x) -> resolveCompletely(x, depth-1)))
 
-    resolveAll([unresolvedKeys, unresolvedValues]).then ([resolvedKeys, resolvedValues]) ->
-      object(resolvedKeys, resolvedValues)
+    unresolvedValues.then (resolvedValues) ->
+      object(keys(resolved), resolvedValues)
 
 
 overrides = ['then']
@@ -22,8 +21,11 @@ init = ->
 
   mixedIn = {}
 
-  Z = (obj) ->
-    resolvedObject = resolveCompletely(obj)
+  Z = (obj, conf = {}) ->
+    conf.depth = 1 if typeof conf.depth == 'undefined'
+    conf.depth = 1000000 if conf.depth == null
+
+    resolvedObject = resolveCompletely(obj, conf.depth)
     overrideLayer = objectCreate(resolvedObject)
     resultingPromise = objectCreate(overrideLayer)
 
@@ -34,7 +36,7 @@ init = ->
     pairs(mixedIn).forEach ([name, func]) ->
       resultingPromise[name] = (args...) ->
         resultingPromise.then (resolved) ->
-          resolveCompletely(args).then (args) ->
+          resolveCompletely(args, 1).then (args) ->
             func.apply({ value: resolved }, args)
 
     resultingPromise

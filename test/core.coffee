@@ -141,6 +141,39 @@ describe 'Z method', ->
     keys = Object.keys(x)
     keys.should.eql []
 
+  describe 'conf arg', ->
+
+    it 'given depth 0 does not resolve nested properties, but leaves them as promises', ->
+      v = @Z({ b: 2 })
+      @Z({ a: v }, { depth: 0 }).then (res) ->
+        res.a.then.should.exist
+
+    it 'given depth 1 resolves one level of promises and leaves the deeper ones intact', ->
+      v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
+      @Z({ a: v }, { depth: 1 }).then (res) ->
+        res.a.b.should.eql 2
+        res.a.b.should.not.eql 1
+        res.a.c.then.should.exist
+
+    it 'given no depth it defaults to resolving one level of promises and leaves the deeper ones intact', ->
+      v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
+      @Z({ a: v }, { }).then (res) ->
+        res.a.b.should.eql 2
+        res.a.b.should.not.eql 1
+        res.a.c.then.should.exist
+
+    it 'given no config at all it defaults to resolving one level of promises and leaves the deeper ones intact', ->
+      v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
+      @Z({ a: v }).then (res) ->
+        res.a.b.should.eql 2
+        res.a.b.should.not.eql 1
+        res.a.c.then.should.exist
+
+    it 'given depth null resolves all promises at all levels', ->
+      v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
+      @Z({ a: v }, { depth: null }).then (res) ->
+        res.should.eql { a: { b: 2, c: 1 }}
+
   describe 'then', ->
 
     it 'returns an object that has the expected functions', ->
