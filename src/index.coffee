@@ -14,12 +14,18 @@ resolveCompletely = (unresolved, depth) ->
       object(keys(resolved), resolvedValues)
 
 
-overrides = ['then']
-
 
 init = ->
 
   mixedIn = {}
+  mixinObj = {}
+
+  updateMixinObj = ->
+    pairs(mixedIn).forEach ([name, func]) ->
+      mixinObj[name] = (args...) ->
+        @then (resolved) ->
+          resolveCompletely(args, 1).then (args) ->
+            func.apply({ value: resolved }, args)
 
   Z = (obj, conf = {}) ->
     conf.depth = 1 if typeof conf.depth == 'undefined'
@@ -29,15 +35,11 @@ init = ->
     overrideLayer = objectCreate(resolvedObject)
     resultingPromise = objectCreate(overrideLayer)
 
-    overrides.forEach (name) ->
-      overrideLayer[name] = (args...) ->
-        Z resolvedObject[name].apply(this, args)
+    overrideLayer.then = (args...) ->
+      Z resolvedObject.then.apply(this, args)
 
-    pairs(mixedIn).forEach ([name, func]) ->
-      resultingPromise[name] = (args...) ->
-        resultingPromise.then (resolved) ->
-          resolveCompletely(args, 1).then (args) ->
-            func.apply({ value: resolved }, args)
+    for key, value of mixinObj
+      resultingPromise[key] = value
 
     resultingPromise
 
@@ -48,6 +50,7 @@ init = ->
         context = { value: @value }
         context.base = oldOne if oldOne
         func.apply(context, arguments)
+    updateMixinObj()
 
   Z.bindSync = (func, context) ->
     (unresolvedArgs...) ->
