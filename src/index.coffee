@@ -15,7 +15,7 @@ resolveCompletely = (unresolved, depth) ->
 
 
 
-init = ->
+init = (defaultConf) ->
 
   mixedIn = {}
   mixinObj = {}
@@ -27,7 +27,8 @@ init = ->
           resolveCompletely(args, 1).then (args) ->
             func.apply({ value: resolved }, args)
 
-  Z = (obj, conf = {}) ->
+  Z = (obj, conf) ->
+    conf = conf ? defaultConf ? {}
     conf.depth = 1 if typeof conf.depth == 'undefined'
     conf.depth = 1000000 if conf.depth == null
 

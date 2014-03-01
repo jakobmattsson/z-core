@@ -174,6 +174,12 @@ describe 'Z method', ->
       @Z({ a: v }, { depth: null }).then (res) ->
         res.should.eql { a: { b: 2, c: 1 }}
 
+    it 'uses the config given at init if none is passed at Z-invokation', ->
+      localZ = coreZ.init({ depth: null })
+      v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
+      localZ({ a: v }).then (res) ->
+        res.should.eql { a: { b: 2, c: 1 }}
+
   describe 'then', ->
 
     it 'returns an object that has the expected functions', ->
