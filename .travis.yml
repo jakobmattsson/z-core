@@ -11,3 +11,7 @@ deploy:
   on:
     node: '0.10'
     tags: true
+notifications:
+  hipchat:
+    rooms:
+      secure: nYtSyxbhJ6IM3ybexkfrIzq7JKckcEg4NjD8fQFYkaj9DGUfRluLk5p/DjzwskoSFWCEUiee6HF7jHjk2+wQ271LtSD8oFcSESGBMP5Zs9/nw9deVPMklW9F0CuHAqhKSjTHc5R+ILoP70bCUdxck2OF/N01IkErJb8+/ZE8Gvw=
