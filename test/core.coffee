@@ -182,6 +182,10 @@ describe 'Z method', ->
 
   describe 'then', ->
 
+    it 'fucks up', ->
+      assertionResult = @Z(42).should.eventually.deep.equal(42)
+      assertionResult.should.be.fulfilled
+
     it 'returns an object that has the expected functions', ->
       @Z.mixin({
         f1: ->

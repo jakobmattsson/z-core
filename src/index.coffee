@@ -37,7 +37,7 @@ init = (defaultConf) ->
     resultingPromise = objectCreate(overrideLayer)
 
     overrideLayer.then = (args...) ->
-      Z resolvedObject.then.apply(this, args)
+      Z resolvedObject.then.apply(resolvedObject, args)
 
     for key, value of mixinObj
       resultingPromise[key] = value
