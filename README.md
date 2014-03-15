@@ -5,7 +5,7 @@ Utility library for JavaScript promises
 
 ### Installation
 
-Use npm: `npm install z-core`
+Use npm: `npm install z-core` and then `var Z = require('z-core');`
 
 Or bower: (not uploaded yet)
 
