@@ -3,6 +3,15 @@
 Utility library for JavaScript promises
 
 
+
+### Test status
+
+[![Selenium Test Status](https://saucelabs.com/browser-matrix/jakobmattsson-zcore.svg)](https://saucelabs.com/u/jakobmattsson-zcore)
+
+It's also been tested in Node.js 0.10 and 0.11.
+
+
+
 ### Installation
 
 Use npm: `npm install z-core` and then `var Z = require('z-core');`
