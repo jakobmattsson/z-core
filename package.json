@@ -79,7 +79,7 @@
     "es6-promise": "^0.1.1"
   },
   "scripts": {
-    "make-dist": "npm test && mkdir -p dist && browserify lib/index.js > dist/latest.js",
+    "make-dist": "npm test && mkdir -p dist && browserify lib/index.js > dist/z-core-`git tag -l --contains HEAD | grep '^v\\d*\\.\\d*\\.\\d*$'`.js",
     "prepare-browser-tests": "sh scripts/prepare-browser-tests.sh",
     "deploy-browser-tests": "npm run prepare-browser-tests && bucketful",
     "test-browser-remote": "npm run deploy-browser-tests && chalcogen --platform saucelabs",
