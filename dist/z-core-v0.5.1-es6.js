@@ -31,25 +31,6 @@
   require.define = function (file, fn) {
     require.modules[file] = fn;
   };
-  var process = function () {
-      var cwd = '/';
-      return {
-        title: 'browser',
-        version: 'v0.10.20',
-        browser: true,
-        env: {},
-        argv: [],
-        nextTick: global.setImmediate || function (fn) {
-          setTimeout(fn, 0);
-        },
-        cwd: function () {
-          return cwd;
-        },
-        chdir: function (dir) {
-          cwd = dir;
-        }
-      };
-    }();
   require.define('/lib/index.js', function (module, exports, __dirname, __filename) {
     (function () {
       var Promise, init, isArray, isPrimitive, keys, makeZ, object, objectCreate, pairs, proc, resolveAll, resolveCompletely, tools, values, __slice = [].slice;
