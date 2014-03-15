@@ -14,6 +14,8 @@ DIST_FILENAME = z-core-$(TAG)
 
 ES6_ALIAS = /node_modules/es6-promise/dist/commonjs/main.js:./lib/promise.js
 
+cjsify = node_modules/commonjs-everywhere/bin/cjsify
+
 clean:
 	rm -rf lib dist browsertest
 
@@ -24,10 +26,10 @@ lib: src/*.coffee
 dist: lib
 	make run-node-tests
 	mkdir -p dist
-	cjsify lib/index.js -x Z -o dist/$(DIST_FILENAME)-es6.js         --alias $(ES6_ALIAS)
-	cjsify lib/index.js -x Z -o dist/$(DIST_FILENAME)-es6-min.js --m --alias $(ES6_ALIAS)
-	cjsify lib/index.js -x Z -o dist/$(DIST_FILENAME).js
-	cjsify lib/index.js -x Z -o dist/$(DIST_FILENAME)-min.js     --m
+	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-es6.js         --alias $(ES6_ALIAS)
+	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-es6-min.js --m --alias $(ES6_ALIAS)
+	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME).js
+	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-min.js     --m
 
 browsertest: dist test/* test/**/*
 
