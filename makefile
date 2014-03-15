@@ -17,15 +17,15 @@ ES6_ALIAS = /node_modules/es6-promise/dist/commonjs/main.js:./lib/promise.js
 cjsify = node_modules/commonjs-everywhere/bin/cjsify
 
 clean:
-	rm -rf lib dist browsertest
+	@rm -rf lib dist browsertest
 
 lib: src/*.coffee
-	rm -rf lib
-	coffee -co lib src
+	@rm -rf lib
+	@coffee -co lib src
 
 dist: lib
-	make run-node-tests
-	mkdir -p dist
+	@make run-node-tests
+	@mkdir -p dist
 	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-es6.js         --alias $(ES6_ALIAS)
 	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-es6-min.js --m --alias $(ES6_ALIAS)
 	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME).js
@@ -47,18 +47,18 @@ browsertest: dist test/* test/**/*
 	browserify -t coffeeify test/support/browser.js > $(TESTDIR)/browserified-tests.js
 
 deploy-browser-tests: browsertest
-	bucketful
+	@bucketful
 
 run-node-tests:
-	mocha --grep "$(TESTS)"
+	@mocha --grep "$(TESTS)"
 
 run-browser-test: deploy-browser-tests
-	chalcogen --platform saucelabs
+	@chalcogen --platform saucelabs
 
 run-tests: lib
 ifeq ($(CI),true)
-	make run-node-tests
-	make run-browser-test
+	@make run-node-tests
+	@make run-browser-test
 else
-	make run-node-tests
+	@make run-node-tests
 endif
