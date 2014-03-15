@@ -34,11 +34,6 @@
     "environments": [
       {
         "browserName": "internet explorer",
-        "platform": "Windows 7",
-        "version": "9"
-      },
-      {
-        "browserName": "internet explorer",
         "platform": "Windows 8",
         "version": "10"
       },
@@ -64,6 +59,8 @@
     "node": ">= 0.10 < 0.11"
   },
   "devDependencies": {
+    "commonjs-everywhere": "^0.9.7",
+    "es5-shim": "^2.3.0",
     "browserify": "^3.30.2",
     "bucketful": "^0.15.1",
     "coffeeify": "^0.6.0",
@@ -79,13 +76,8 @@
     "es6-promise": "^0.1.1"
   },
   "scripts": {
-    "make-dist": "npm test && mkdir -p dist && browserify lib/index.js > dist/z-core-`git tag -l --contains HEAD | grep '^v\\d*\\.\\d*\\.\\d*$'`.js",
-    "prepare-browser-tests": "sh scripts/prepare-browser-tests.sh",
-    "deploy-browser-tests": "npm run prepare-browser-tests && bucketful",
-    "test-browser-remote": "npm run deploy-browser-tests && chalcogen --platform saucelabs",
     "coverage": "jscov --expand --conditionals src .cov && JSCOV=.cov mocha --reporter mocha-term-cov-reporter",
-    "test": "mocha --grep \"$TESTS\"",
-    "pretest": "coffee -co lib src",
-    "prepublish": "coffee -co lib src"
+    "prepublish": "coffee -co lib src",
+    "test": "make run-tests"
   }
 }
