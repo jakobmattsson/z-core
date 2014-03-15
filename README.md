@@ -17,58 +17,63 @@ Or download it manually from the `dist` folder of this repo.
 
 Use `bindSync` to create promise-friendly functions from sync functions.
 
-    var pmin = Z.bindSync(Math.min);
+```js
+var pmin = Z.bindSync(Math.min);
 
-    // It can still be called with regular values
-    pmin(10, 5).then(function(minValue) {
-      console.log(minValue); // 5
-    });
+// It can still be called with regular values
+pmin(10, 5).then(function(minValue) {
+  console.log(minValue); // 5
+});
 
-    // But is can also be called with promises
-    var promise = returnsTheValue2AsPromise();
-    pmin(promise, 5).then(function(minValue) {
-      console.log(minValue); // 2
-    });
+// But is can also be called with promises
+var promise = returnsTheValue2AsPromise();
+pmin(promise, 5).then(function(minValue) {
+  console.log(minValue); // 2
+});
+```
 
 Use `bindAsync` to create promise-friendly functions from async functions.
 
-    var postPromisedJSON = Z.bindAsync(postJSON);
-    var agePromise = returnsTheValue28AsPromise();
+```js
+var postPromisedJSON = Z.bindAsync(postJSON);
+var agePromise = returnsTheValue28AsPromise();
 
-    // Note that it's called with a mix of regular values an promises
-    postPromisedJSON('/people', { name: 'Jakob', age: agePromise }).then(function(res) {
-      console.log(res); // the result of the request
-    })
-
+// Note that it's called with a mix of regular values an promises
+postPromisedJSON('/people', { name: 'Jakob', age: agePromise }).then(function(res) {
+  console.log(res); // the result of the request
+});
+```
 
 
 ### Augmenting promises
 
 Extend the promises returned by Z using mixins.
 
-    Z.mixin({
-      get: function(prop) {
-        return this.value[prop];
-      },
-      toLowerCase: function() {
-        return this.value.toLowerCase();
-      },
-      first: function(n) {
-        if (n == null) {
-          n = 1;
-        }
-        return this.value.slice(0, n);
-      },
-      log: function() {
-        console.log(this.value);
-      }
-    });
+```js
+Z.mixin({
+  get: function(prop) {
+    return this.value[prop];
+  },
+  toLowerCase: function() {
+    return this.value.toLowerCase();
+  },
+  first: function(n) {
+    if (n == null) {
+      n = 1;
+    }
+    return this.value.slice(0, n);
+  },
+  log: function() {
+    console.log(this.value);
+  }
+});
 
-    var getPromisedJSON = Z.bindAsync(getJSON);
+var getPromisedJSON = Z.bindAsync(getJSON);
 
-    var firstThreeInName = getPromisedJSON('/cookies/123').get('name').toLowerCase().first(3);
+var firstThreeInName = getPromisedJSON('/cookies/123').get('name').toLowerCase().first(3);
 
-    firstThreeInName.log();
+firstThreeInName.log();
+```
 
 
 ### Use a prepackaged version of Z
