@@ -48,7 +48,7 @@ deploy-browser-tests: browsertest
 	bucketful
 
 run-node-tests:
-	mocha --grep "$TESTS"
+	mocha --grep "$(TESTS)"
 
 run-browser-test: deploy-browser-tests
 	chalcogen --platform saucelabs
