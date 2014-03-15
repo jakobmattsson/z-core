@@ -1,0 +1,30 @@
+{
+  "name": "z-core",
+  "version": "0.5.1",
+  "homepage": "https://github.com/jakobmattsson/z-core",
+  "authors": [
+    "Jakob Mattsson <jakob.mattsson@gmail.com>"
+  ],
+  "description": "Utility library for JavaScript promises",
+  "main": "dist/z-core.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "promises",
+    "util",
+    "functional",
+    "client",
+    "server",
+    "browser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "src"
+  ]
+}

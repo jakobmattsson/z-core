@@ -4,5 +4,6 @@ lib
 browsertest
 config.json
 *.log
+tmp
 z-core.sublime-workspace
 .DS_Store

@@ -1,4 +1,5 @@
 TAG = $(shell git tag | tail -n 1)
+DATE = $(shell date +'%Y-%m-%d')
 TESTDIR = browsertest
 
 ES5_SHIM = node_modules/es5-shim/es5-shim.js
@@ -10,28 +11,29 @@ MOCHA_AS_PROMISED = node_modules/mocha-as-promised/mocha-as-promised.js
 
 BROWSER_TEST_FILES = $(ES5_SHIM) $(ES5_SHAM) $(MOCHA) $(CHAI) $(CHAI_AS_PROMISED) $(MOCHA_AS_PROMISED)
 
-DIST_FILENAME = z-core-$(TAG)
-
 ES6_ALIAS = /node_modules/es6-promise/dist/commonjs/main.js:./lib/promise.js
 
 cjsify = node_modules/commonjs-everywhere/bin/cjsify
 
 clean:
-	@rm -rf lib dist browsertest
+	@rm -rf lib dist browsertest tmp
 
 lib: src/*.coffee
 	@rm -rf lib
 	@coffee -co lib src
 
-dist: lib
+dist: lib makefile
 	@make run-node-tests
-	@mkdir -p dist
-	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-es6.js         --alias $(ES6_ALIAS)
-	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-es6-min.js --m --alias $(ES6_ALIAS)
-	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME).js
-	$(cjsify) lib/index.js --no-node -x Z -o dist/$(DIST_FILENAME)-min.js     --m
+	@mkdir -p dist tmp
 
-browsertest: dist test/* test/**/*
+	echo "// z-core $(TAG)\n// Jakob Mattsson $(DATE)" > tmp/header.txt
+
+	$(cjsify) lib/index.js --no-node -x Z     --alias $(ES6_ALIAS) | cat tmp/header.txt - > dist/z-core-es6.js
+	$(cjsify) lib/index.js --no-node -x Z --m --alias $(ES6_ALIAS) | cat tmp/header.txt - > dist/z-core-es6-min.js
+	$(cjsify) lib/index.js --no-node -x Z                          | cat tmp/header.txt - > dist/z-core.js
+	$(cjsify) lib/index.js --no-node -x Z --m                      | cat tmp/header.txt - > dist/z-core-min.js
+
+browsertest: dist test/* test/**/* makefile
 
 	rm -rf browsertest
 	mkdir -p $(TESTDIR)/vendor
@@ -41,8 +43,8 @@ browsertest: dist test/* test/**/*
 
 	cp dist/*.js $(TESTDIR)
 
-	cat test/support/test.html | sed -e 's/ZDIST.js/$(DIST_FILENAME).js/' > $(TESTDIR)/index.html
-	cat test/support/test.html | sed -e 's/ZDIST.js/$(DIST_FILENAME)-es6.js/' > $(TESTDIR)/es6.html
+	cat test/support/test.html | sed -e 's/ZDIST.js/z-core.js/' | $(TESTDIR)/index.html
+	cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' | $(TESTDIR)/es6.html
 
 	browserify -t coffeeify test/support/browser.js > $(TESTDIR)/browserified-tests.js
 
