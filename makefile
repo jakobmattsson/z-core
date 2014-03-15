@@ -43,8 +43,8 @@ browsertest: dist test/* test/**/* makefile
 
 	cp dist/*.js $(TESTDIR)
 
-	cat test/support/test.html | sed -e 's/ZDIST.js/z-core.js/' | $(TESTDIR)/index.html
-	cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' | $(TESTDIR)/es6.html
+	cat test/support/test.html | sed -e 's/ZDIST.js/z-core.js/' > $(TESTDIR)/index.html
+	cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' > $(TESTDIR)/es6.html
 
 	browserify -t coffeeify test/support/browser.js > $(TESTDIR)/browserified-tests.js
 
