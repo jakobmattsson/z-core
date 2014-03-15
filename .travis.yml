@@ -19,5 +19,5 @@ env:
   global:
     - secure: "OHC1xY8EfrGjujeCeesoklvcX8XipMCMIwOj4ntxpSwqiC/UyX/mtYDLP0e3cKtCKpqvSmSXVBE0oiNNFJ+inEYlQPlG1wlT4Nfsy4daMotmRj0+JJNIzfLaHvobU69oktukPyoac2X6Wxj8iZGzxI5Njbuvuq4wD4iagrZgnJU=" # bucketful__key
     - secure: "CB3RWlFTZoNEt7NhREkey5TCEn7xQnz0rIKUC/i6hf+nIXP0NCIL9VhhZNsM2JqV0w4OhtRdcMuEkKYvrPk13EMvJuktMk4lkK+os+Je1J7kRWWz2RE3QUZOnhvbOfpr4XxrznzhO/oePxcirFa4WyeT3Ce9mNjoE1lMimq5gpU=" # bukcetful__secret
-    - secure: "AFmmyiqXhF7KHrWku3dzF1j8SJParSOR90TYRkVK5N9Afvb7phUR7QgQ1qsVc6etxtR7bqAH0P/V8pJu/1hjYUyU0rFAHsKHGY6ZNgcln1S0uLpZ/JqILLtsOhymPFyT/cxkLuuLhJP2ljsU0Id/1mr5r8aiezHNB3vBH/7GNYk=" # saucelabs__username
-    - secure: "l9eqjZ1MUlEeq2YlCfnXAVvPiKtDBc4W8CCvZ1yCZCQzAVYInyFgBL37lh2cT4XxtlguxtkF6cEniuaHW9o9rcvfa2+zFkUt6lnnyC9x2BxSKhMf/CkPefeJp0jxtVhiyXZn6Agw7gGb4vtNzGQ8R9MAoHQ4ZO2kipeiueNvhLE=" # saucelabs__password
+    - secure: "QRWIwqQYozxRglDyXgbCj+WP/f+Kbxvoj6/aE1f+b/jJlXzPHOTmxq4P6BeDn1Q9VuVc21z4ejkKI6ETjTFYWZyYbqQyp6/XRTaM7IJ2qLoMeGzLlDnardHIw0YpeZa2XD2U8GOXKpOPhL8fVHZl4FoP0RsxVy6Eg00EHQGeOJ0=" # saucelabs__username
+    - secure: "OidRtdlK/W+DW/cg35i0ro0FxufD+ly9D/ic61YTQga5aNDaVwQBlaL+9eZZqSl8dhRrA00hFi6l+fFlSz50/NGJw+leENfnTS6Irmi2NhBLCtukHXgfPrsCcYvOqsP4Mh34dbV2+ePS9lfbg6sb1n0HWnvMU7CHfOnBHIQTyo0=" # saucelabs__password
