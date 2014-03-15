@@ -22,7 +22,7 @@ lib: src/*.coffee
 	coffee -co lib src
 
 dist: lib
-	npm test
+	make run-node-tests
 	mkdir -p dist
 	cjsify lib/index.js -x Z -o dist/$(DIST_FILENAME)-es6.js         --alias $(ES6_ALIAS)
 	cjsify lib/index.js -x Z -o dist/$(DIST_FILENAME)-es6-min.js --m --alias $(ES6_ALIAS)
@@ -55,8 +55,8 @@ run-browser-test: deploy-browser-tests
 
 run-tests: lib
 ifeq ($(CI),true)
-	mocha --grep "$(TESTS)"
+	make run-node-tests
 	make run-browser-test
 else
-	mocha --grep "$(TESTS)"
+	make run-node-tests
 endif
