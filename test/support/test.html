@@ -21,16 +21,7 @@
 
     <script type="text/javascript">
       chai.should();
-      chai.use(chaiAsPromised);
       mocha.setup({ ui: 'bdd', ignoreLeaks: false, timeout: 8000 });
-
-      window.requireSource = function(name) {
-        if (name == 'index') {
-          return Z;
-        } else {
-          alert("dont know what to return");
-        }
-      };
     </script>
 
     <script type="text/javascript" src="browserified-tests.js"></script>

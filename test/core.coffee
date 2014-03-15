@@ -1,26 +1,24 @@
-coreZ = requireSource 'index'
-
 describe 'root Z', ->
 
   it 'is a function', ->
-    coreZ.should.be.a 'function'
+    Z.should.be.a 'function'
 
   it 'has an init and a mixin function', ->
     expectedFunctions = ['bindAsync', 'bindSync', 'init', 'mixin']
 
-    keys = Object.keys(coreZ)
+    keys = Object.keys(Z)
     sortedKeys = keys.sort()
     sortedKeys.should.eql expectedFunctions
 
     expectedFunctions.forEach (expectedFunction) ->
-      coreZ[expectedFunction].should.be.a 'function'
+      Z[expectedFunction].should.be.a 'function'
 
 
 
 describe 'Z bind async', ->
 
   beforeEach ->
-    @Z = coreZ.init()
+    @Z = Z.init()
 
   global = do -> this
 
@@ -53,7 +51,7 @@ describe 'Z bind async', ->
 describe 'Z bind sync', ->
 
   beforeEach ->
-    @Z = coreZ.init()
+    @Z = Z.init()
 
   global = do -> this
 
@@ -84,7 +82,7 @@ describe 'Z bind sync', ->
 describe 'Z method', ->
   
   beforeEach ->
-    @Z = coreZ.init()
+    @Z = Z.init()
 
   it 'returns an object without direct properties', ->
     x = @Z(1)
@@ -175,7 +173,7 @@ describe 'Z method', ->
         res.should.eql { a: { b: 2, c: 1 }}
 
     it 'uses the config given at init if none is passed at Z-invokation', ->
-      localZ = coreZ.init({ depth: null })
+      localZ = Z.init({ depth: null })
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       localZ({ a: v }).then (res) ->
         res.should.eql { a: { b: 2, c: 1 }}

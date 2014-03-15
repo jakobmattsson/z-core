@@ -1,15 +1,11 @@
 var chai = require('chai');
+var jscov = require('jscov');
 var chaiAsPromised = require('chai-as-promised');
 var mochaAsPromised = require('mocha-as-promised');
+var global = (function() { return this; }());
 
 chai.should();
 chai.use(chaiAsPromised);
 mochaAsPromised();
 
-var global = (function() { return this; }());
-
-var jscov = require('jscov');
-
-global.requireSource = function(name) {
-  return require(jscov.cover('../..', 'lib', name));
-};
+global.Z = require(jscov.cover('../..', 'lib', 'index'));
