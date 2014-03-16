@@ -96,13 +96,13 @@ test-browsers: deploy-browser-tests
 
 run-tests: lib
 ifneq ($(CI),true)
-	echo "not CI.. only testing in node"
+	# Not running CI; only testing in node
 	@make test-node
 else ifneq ($(TRAVIS_NODE_VERSION),0.10)
-	echo "running node $(TRAVIS_NODE_VERSION).. only testing in node"
+	# Running CI in a node version other than 0.10; only testing in node
 	@make test-node
 else
-	echo "running node $(TRAVIS_NODE_VERSION).. testing everything!"
+	# Running CI in a node 0.10 - testing node AND browsers!
 	@make test-node
 	@make test-browsers
 endif
