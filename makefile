@@ -98,7 +98,7 @@ run-tests: lib
 ifneq ($(CI),true)
 	echo "not CI.. only testing in node"
 	@make test-node
-else ifneq ($(TRAVIS_NODE_VERSION), "0.10")
+else ifneq ($(TRAVIS_NODE_VERSION),0.10)
 	echo "running node $(TRAVIS_NODE_VERSION).. only testing in node"
 	@make test-node
 else
