@@ -95,9 +95,14 @@ test-browsers: deploy-browser-tests
 	@chalcogen --platform saucelabs
 
 run-tests: lib
-ifeq ($(CI),true)
+ifneq ($(CI),true)
+	echo "not CI.. only testing in node"
+	@make test-node
+else ifneq ($(TRAVIS_NODE_VERSION), "0.10")
+	echo "running node $(TRAVIS_NODE_VERSION).. only testing in node"
+	@make test-node
+else
+	echo "running node $(TRAVIS_NODE_VERSION).. testing everything!"
 	@make test-node
 	@make test-browsers
-else
-	@make test-node
 endif
