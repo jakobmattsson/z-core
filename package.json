@@ -10,7 +10,7 @@
     "browser"
   ],
   "version": "0.5.5",
-  "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobmattsson.se)",
+  "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobm.com)",
   "license": "MIT",
   "main": "./lib/index.js",
   "repository": {
