@@ -38,11 +38,6 @@
         "version": "10"
       },
       {
-        "browserName": "chrome",
-        "platform": "Windows 8.1",
-        "version": "26"
-      },
-      {
         "browserName": "firefox",
         "platform": "Windows 8",
         "version": "26"
