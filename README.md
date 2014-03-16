@@ -1,26 +1,26 @@
-# Z [![Build Status](https://secure.travis-ci.org/jakobmattsson/z-core.png)](http://travis-ci.org/jakobmattsson/z-core)
+[![Build Status](https://secure.travis-ci.org/jakobmattsson/z-core.png)](http://travis-ci.org/jakobmattsson/z-core) 
+
+[![Selenium Test Status](https://saucelabs.com/browser-matrix/jakobmattsson-zcore.svg)](https://saucelabs.com/u/jakobmattsson-zcore)
+
+
+
+# Z
 
 Utility library for JavaScript promises
 
 
 
-### Test status
-
-[![Selenium Test Status](https://saucelabs.com/browser-matrix/jakobmattsson-zcore.svg)](https://saucelabs.com/u/jakobmattsson-zcore)
-
-It's also been tested in Node.js 0.10 and 0.11.
-
-
-
 ### Installation
 
-Use npm: `npm install z-core` and then `var Z = require('z-core');`
+Option 1, npm: `npm install z-core` and then `var Z = require('z-core');`
 
-Or bower: (not uploaded yet)
+Option 2, bower: `bower install z-core`
 
-Or download it manually from the `dist` folder of this repo.
+Option 3, download it manually from the `dist` folder of this repo.
 
+If you care about shaving off some bytes and you only target ES6-compatible environments, then you can use `z-core-es6.js`. It assumes that there is a native promise-implementation, as provided by ES6. The standard Z implementation comes with a small polyfill though.
 
+Minimified (not gziped) the code is about 10k for the standard version, compatibile with all environments, and about 4k for the ES6-version.
 
 ### Wrapping functions to accept promises as parameters and return promises
 
@@ -85,7 +85,7 @@ firstThreeInName.log();
 ```
 
 
-### Use a prepackaged version of Z
+### Using a prepackaged version of Z
 
 There are several mixin packages available for your convenience:
 
