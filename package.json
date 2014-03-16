@@ -59,6 +59,7 @@
     "node": ">= 0.10 < 0.11"
   },
   "devDependencies": {
+    "jsontool": "7.0.1",
     "commonjs-everywhere": "^0.9.7",
     "es5-shim": "^2.3.0",
     "browserify": "^3.30.2",
