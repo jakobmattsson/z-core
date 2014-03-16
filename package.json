@@ -48,9 +48,29 @@
         "version": "26"
       },
       {
+        "browserName": "chrome",
+        "platform": "Linux",
+        "version": "26"
+      },
+      {
+        "browserName": "chrome",
+        "platform": "Windows 8.1",
+        "version": "beta"
+      },
+      {
+        "browserName": "chrome",
+        "platform": "OS X 10.8",
+        "version": "beta"
+      },
+      {
         "browserName": "safari",
         "platform": "OS X 10.8",
         "version": "6"
+      },
+      {
+        "browserName": "safari",
+        "platform": "Windows 7",
+        "version": "5"
       }
     ]
   },
