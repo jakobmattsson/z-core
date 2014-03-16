@@ -22,7 +22,7 @@ If you care about shaving off some bytes and you only target ES6-compatible envi
 
 Minimified (not gziped) the code is about 10k for the standard version, compatibile with all environments, and about 4k for the ES6-version.
 
-### Wrapping functions to accept promises as parameters and return promises
+### Functions can now accept promises as arguments
 
 Use `bindSync` to create promise-friendly functions from sync functions.
 
