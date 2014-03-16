@@ -76,8 +76,6 @@
     "es6-promise": "^0.1.1"
   },
   "scripts": {
-    "coverage": "jscov --expand --conditionals src .cov && JSCOV=.cov mocha --reporter mocha-term-cov-reporter",
-    "prepublish": "coffee -co lib src",
     "test": "make run-tests"
   }
 }

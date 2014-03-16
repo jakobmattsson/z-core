@@ -1,6 +1,4 @@
-TAG = $(shell git tag | tail -n 1)
 DATE = $(shell date +'%Y-%m-%d')
-TESTDIR = browsertest
 
 ES5_SHIM = node_modules/es5-shim/es5-shim.js
 ES5_SHAM = node_modules/es5-shim/es5-sham.js
@@ -15,52 +13,91 @@ ES6_ALIAS = /node_modules/es6-promise/dist/commonjs/main.js:./lib/promise.js
 
 cjsify = node_modules/commonjs-everywhere/bin/cjsify
 
-clean:
-	@rm -rf lib dist browsertest tmp
 
-lib: src/*.coffee
+
+## Creating files and folders
+## --------------------------------------------------------------------------
+
+.cov: src/*.coffee
+	@jscov --expand --conditionals src .cov
+
+lib: src/*.coffee makefile
 	@rm -rf lib
 	@coffee -co lib src
 
-dist: lib makefile
-	@make run-node-tests
-	@mkdir -p dist tmp
+tmp:
+	@mkdir -p tmp
 
-	echo "// z-core $(TAG)\n// Jakob Mattsson $(DATE)" > tmp/header.txt
+dist:
+	@mkdir -p dist
 
-	$(cjsify) lib/index.js --no-node -x Z     --alias $(ES6_ALIAS) | cat tmp/header.txt - > dist/z-core-es6.js
-	$(cjsify) lib/index.js --no-node -x Z --m --alias $(ES6_ALIAS) | cat tmp/header.txt - > dist/z-core-es6-min.js
-	$(cjsify) lib/index.js --no-node -x Z                          | cat tmp/header.txt - > dist/z-core.js
-	$(cjsify) lib/index.js --no-node -x Z --m                      | cat tmp/header.txt - > dist/z-core-min.js
+tmp/dist-header.txt: package.json tmp
+	echo "// z-core v`cat package.json | json version`\n// Jakob Mattsson $(DATE)" > tmp/dist-header.txt
 
-browsertest: dist test/* test/**/* makefile
+dist/z-core-es6.js: lib dist tmp/dist-header.txt
+	$(cjsify) lib/index.js --no-node -x Z     --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6.js
 
-	rm -rf browsertest
-	mkdir -p $(TESTDIR)/vendor
+dist/z-core-es6-min.js: lib dist tmp/dist-header.txt
+	$(cjsify) lib/index.js --no-node -x Z --m --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6-min.js
 
-	cp node_modules/mocha/mocha.css $(TESTDIR)
-	cat $(BROWSER_TEST_FILES) > $(TESTDIR)/vendor.js
+dist/z-core.js: lib dist tmp/dist-header.txt
+	$(cjsify) lib/index.js --no-node -x Z                          | cat tmp/dist-header.txt - > dist/z-core.js
 
-	cp dist/*.js $(TESTDIR)
+dist/z-core-min.js: lib dist tmp/dist-header.txt
+	$(cjsify) lib/index.js --no-node -x Z --m                      | cat tmp/dist-header.txt - > dist/z-core-min.js
 
-	cat test/support/test.html | sed -e 's/ZDIST.js/z-core.js/' > $(TESTDIR)/index.html
-	cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' > $(TESTDIR)/es6.html
+browsertest:
+	@mkdir -p browsertest
 
-	browserify -t coffeeify test/support/browser.js > $(TESTDIR)/browserified-tests.js
+browsertest/mocha.css: browsertest
+	@cp node_modules/mocha/mocha.css browsertest
 
-deploy-browser-tests: browsertest
+browsertest/vendor.js: browsertest
+	@cat $(BROWSER_TEST_FILES) > browsertest/vendor.js
+
+browsertest/z-core.js: browsertest dist/z-core.js
+	@cp dist/z-core.js browsertest
+
+browsertest/z-core-es6.js: browsertest dist/z-core-es6.js
+	@cp dist/z-core-es6.js browsertest
+
+browsertest/index.html: browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/mocha.css browsertest/z-core.js
+	@cat test/support/test.html | sed -e 's/ZDIST.js/z-core.js/' > browsertest/index.html
+
+browsertest/es6.html:   browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/mocha.css browsertest/z-core-es6.js
+	@cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' > browsertest/es6.html
+
+browsertest/browserified-tests.js: browsertest test/* test/**/*
+	browserify -t coffeeify test/support/browser.js > browsertest/browserified-tests.js
+
+
+
+## Tasks
+## --------------------------------------------------------------------------
+
+clean:
+	@rm -rf lib browsertest tmp .cov
+
+update-dist: dist/z-core-es6.js dist/z-core-es6-min.js dist/z-core.js dist/z-core-min.js
+
+compile-browser-tests: browsertest/index.html browsertest/es6.html
+
+deploy-browser-tests: compile-browser-tests
 	@bucketful
 
-run-node-tests:
+test-coverage: .cov
+	@JSCOV=.cov mocha --reporter mocha-term-cov-reporter
+
+test-node:
 	@mocha --grep "$(TESTS)"
 
-run-browser-test: deploy-browser-tests
+test-browsers: deploy-browser-tests
 	@chalcogen --platform saucelabs
 
 run-tests: lib
 ifeq ($(CI),true)
-	@make run-node-tests
-	@make run-browser-test
+	@make test-node
+	@make test-browsers
 else
-	@make run-node-tests
+	@make test-node
 endif
