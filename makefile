@@ -32,7 +32,7 @@ dist:
 	@mkdir -p dist
 
 tmp/dist-header.txt: package.json tmp
-	echo "// z-core v`cat package.json | json version`\n// Jakob Mattsson $(DATE)" > tmp/dist-header.txt
+	@echo "// z-core v`cat package.json | json version`\n// Jakob Mattsson $(DATE)" > tmp/dist-header.txt
 
 dist/z-core-es6.js: lib dist tmp/dist-header.txt
 	$(cjsify) lib/index.js --no-node -x Z     --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6.js

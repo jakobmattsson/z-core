@@ -10,10 +10,19 @@ it 'syncs the npm-version with the bower-version', ->
 
 it 'syncs the npm-version with the git version tag', (done) ->
   npm = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
-  exec 'git tag | tail -n 1', propagate done, (stdout, stderr) ->
-    gitVersion = stdout.split('\n')[0].match(/^v(\d+\.\d+\.\d+)$/)[1]
-    npm.version.should.eql gitVersion
-    done()
+
+  exec 'git describe --exact-match', (err) ->
+    if err
+      console.log("skipping git tag check")
+      # Not a proper tag; no need to check it
+      return done()
+
+    console.log("running git tag check")
+
+    exec 'git describe --tags', propagate done, (stdout, stderr) ->
+      gitVersion = stdout.split('\n')[0].match(/^v(\d+\.\d+\.\d+)$/)[1]
+      npm.version.should.eql gitVersion
+      done()
 
 it 'syncs the npm-version with the version in the dist-files', (done) ->
   npm = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
