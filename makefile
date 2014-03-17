@@ -1,12 +1,10 @@
 DATE = $(shell date +'%Y-%m-%d')
 
-ES5_SHIM = node_modules/es5-shim/es5-shim.js
-ES5_SHAM = node_modules/es5-shim/es5-sham.js
 MOCHA = node_modules/mocha/mocha.js
 CHAI = node_modules/chai/chai.js
 CHAI_AS_PROMISED = node_modules/chai-as-promised/lib/chai-as-promised.js
 
-BROWSER_TEST_FILES = $(ES5_SHIM) $(ES5_SHAM) $(MOCHA) $(CHAI) $(CHAI_AS_PROMISED)
+BROWSER_TEST_FILES = $(MOCHA) $(CHAI) $(CHAI_AS_PROMISED)
 
 ES6_ALIAS = /node_modules/es6-promise/dist/commonjs/main.js:./lib/promise.js
 
