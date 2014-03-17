@@ -12,6 +12,7 @@ ES6_ALIAS = /node_modules/es6-promise/dist/commonjs/main.js:./lib/promise.js
 
 cjsify = node_modules/commonjs-everywhere/bin/cjsify
 
+TEST_FILES = $(shell find test -name *.coffee)
 
 
 ## Creating files and folders
@@ -63,8 +64,8 @@ browsertest/index.html: browsertest test/support/test.html browsertest/browserif
 browsertest/es6.html:   browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/vendor.css browsertest/z-core-es6.js
 	@cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' > browsertest/es6.html
 
-browsertest/browserified-tests.js: browsertest test/* test/**/*
-	browserify -t coffeeify test/support/browser.js > browsertest/browserified-tests.js
+browsertest/browserified-tests.js: browsertest $(TEST_FILES) package.json
+	find test -type f -name *.coffee ! -iname "versions.coffee" -exec $(cjsify) {} --no-node \; > browsertest/browserified-tests.js
 
 
 
