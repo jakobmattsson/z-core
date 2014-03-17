@@ -46,7 +46,7 @@ browsertest:
 	@mkdir -p browsertest
 
 browsertest/vendor.css: browsertest
-	@cp node_modules/mocha/vendor.css browsertest
+	@cp node_modules/mocha/mocha.css browsertest/vendor.css
 
 browsertest/vendor.js: browsertest
 	@cat $(BROWSER_TEST_FILES) > browsertest/vendor.js
