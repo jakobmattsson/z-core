@@ -30,7 +30,7 @@
   "chalcogen": {
     "timeout": 60000,
     "domain": "z-test.jdevab.com.s3-website-eu-west-1.amazonaws.com",
-    "path": "/index.html?wait",
+    "path": "/default/index.html",
     "environments": [
       {
         "browserName": "internet explorer",
