@@ -10,6 +10,7 @@ cjsify = node_modules/commonjs-everywhere/bin/cjsify
 TEST_FILES = $(shell find test -name *.coffee)
 LIBS = $(CHAI) $(CHAI_AS_PROMISED)
 
+MOCHA_PARAMS = --compilers coffee:coffee-script/register --require test/support/node.js
 
 
 ## Creating files and folders
@@ -83,10 +84,10 @@ deploy-browser-tests: compile-browser-tests
 	@bucketful
 
 test-coverage: .cov
-	@JSCOV=.cov mocha --reporter mocha-term-cov-reporter
+	@JSCOV=.cov mocha --reporter mocha-term-cov-reporter $(MOCHA_PARAMS)
 
 test-node:
-	@mocha --grep "$(TESTS)" --compilers coffee:coffee-script/register --require test/support/node.js
+	@mocha --grep "$(TESTS)" $(MOCHA_PARAMS)
 
 test-browsers: deploy-browser-tests
 	@chalcogen --platform saucelabs
