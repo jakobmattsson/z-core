@@ -46,8 +46,8 @@ dist/z-core-min.js: lib dist tmp/dist-header.txt
 browsertest:
 	@mkdir -p browsertest
 
-browsertest/mocha.css: browsertest
-	@cp node_modules/mocha/mocha.css browsertest
+browsertest/vendor.css: browsertest
+	@cp node_modules/mocha/vendor.css browsertest
 
 browsertest/vendor.js: browsertest
 	@cat $(BROWSER_TEST_FILES) > browsertest/vendor.js
@@ -58,10 +58,10 @@ browsertest/z-core.js: browsertest dist/z-core.js
 browsertest/z-core-es6.js: browsertest dist/z-core-es6.js
 	@cp dist/z-core-es6.js browsertest
 
-browsertest/index.html: browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/mocha.css browsertest/z-core.js
+browsertest/index.html: browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/vendor.css browsertest/z-core.js
 	@cat test/support/test.html | sed -e 's/ZDIST.js/z-core.js/' > browsertest/index.html
 
-browsertest/es6.html:   browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/mocha.css browsertest/z-core-es6.js
+browsertest/es6.html:   browsertest test/support/test.html browsertest/browserified-tests.js browsertest/vendor.js browsertest/vendor.css browsertest/z-core-es6.js
 	@cat test/support/test.html | sed -e 's/ZDIST.js/z-core-es6.js/' > browsertest/es6.html
 
 browsertest/browserified-tests.js: browsertest test/* test/**/*
