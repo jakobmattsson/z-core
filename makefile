@@ -35,16 +35,16 @@ tmp/dist-header.txt: package.json tmp
 	@echo "// z-core v`cat package.json | json version`\n// Jakob Mattsson $(DATE)" > tmp/dist-header.txt
 
 dist/z-core-es6.js: lib dist tmp/dist-header.txt
-	$(cjsify) lib/index.js --no-node -x Z     --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6.js
+	@$(cjsify) lib/index.js --no-node -x Z     --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6.js
 
 dist/z-core-es6-min.js: lib dist tmp/dist-header.txt
-	$(cjsify) lib/index.js --no-node -x Z --m --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6-min.js
+	@$(cjsify) lib/index.js --no-node -x Z --m --alias $(ES6_ALIAS) | cat tmp/dist-header.txt - > dist/z-core-es6-min.js
 
 dist/z-core.js: lib dist tmp/dist-header.txt
-	$(cjsify) lib/index.js --no-node -x Z                          | cat tmp/dist-header.txt - > dist/z-core.js
+	@$(cjsify) lib/index.js --no-node -x Z                          | cat tmp/dist-header.txt - > dist/z-core.js
 
 dist/z-core-min.js: lib dist tmp/dist-header.txt
-	$(cjsify) lib/index.js --no-node -x Z --m                      | cat tmp/dist-header.txt - > dist/z-core-min.js
+	@$(cjsify) lib/index.js --no-node -x Z --m                      | cat tmp/dist-header.txt - > dist/z-core-min.js
 
 
 
@@ -58,7 +58,7 @@ tmp/test-vendor.js: package.json tmp $(LIBS) test/support/browser.js
 	@cat $(LIBS) test/support/browser.js > tmp/vendor.js
 
 tmp/test-cases.js: package.json tmp $(TEST_FILES)
-	find test -type f -name *.coffee ! -iname "versions.coffee" -exec $(cjsify) {} --no-node \; > tmp/tests.js
+	@find test -type f -name *.coffee ! -iname "versions.coffee" -exec $(cjsify) {} --no-node \; > tmp/tests.js
 
 browsertest/es6/tests.js: package.json browsertest tmp/test-vendor.js tmp/test-cases.js dist/z-core-es6.js
 	@mocha init browsertest/es6
