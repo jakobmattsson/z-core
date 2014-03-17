@@ -28,9 +28,6 @@ lib: src/*.coffee makefile
 tmp:
 	@mkdir -p tmp
 
-dist:
-	@mkdir -p dist
-
 tmp/dist-header.txt: package.json tmp
 	@echo "// z-core v`cat package.json | json version`\n// Jakob Mattsson $(DATE)" > tmp/dist-header.txt
 
