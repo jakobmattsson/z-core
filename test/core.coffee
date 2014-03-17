@@ -24,10 +24,10 @@ describe 'Z bind async', ->
 
   divider = (a, b, callback) ->
     throw new Error("Division by zero") if b == 0
-    setTimeout =>
+    setTimeout (=>
       extra = this?.extraValue || 0
       callback(null, extra + a / b)
-    , 10
+    ), 10
 
   it 'wraps a function to return a promise', ->
     pDivider = @Z.bindAsync(divider)
