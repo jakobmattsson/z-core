@@ -48,7 +48,7 @@ browsertest/vendor.css: browsertest
 	@cp node_modules/mocha/mocha.css browsertest/vendor.css
 
 browsertest/vendor.js: browsertest
-	@cat $(BROWSER_TEST_FILES) > browsertest/vendor.js
+	@cat $(BROWSER_TEST_FILES) test/support/browser.js > browsertest/vendor.js
 
 browsertest/z-core.js: browsertest dist/z-core.js
 	@cp dist/z-core.js browsertest
