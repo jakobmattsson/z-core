@@ -86,7 +86,7 @@ test-coverage: .cov
 	@JSCOV=.cov mocha --reporter mocha-term-cov-reporter
 
 test-node:
-	@mocha --grep "$(TESTS)"
+	@mocha --grep "$(TESTS)" --compilers coffee:coffee-script/register --require test/support/node.js
 
 test-browsers: deploy-browser-tests
 	@chalcogen --platform saucelabs
