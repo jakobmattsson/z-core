@@ -51,8 +51,8 @@ dist/z-core-min.js: lib dist tmp/dist-header.txt
 # Browser test files
 # ------------------
 
-browsertest:
-	@mkdir -p browsertest
+tmp/browsertest: tmp
+	@mkdir -p tmp/browsertest
 
 tmp/test-vendor.js: package.json tmp $(LIBS) test/support/browser.js
 	@cat $(LIBS) test/support/browser.js > tmp/vendor.js
@@ -60,13 +60,13 @@ tmp/test-vendor.js: package.json tmp $(LIBS) test/support/browser.js
 tmp/test-cases.js: package.json tmp $(TEST_FILES)
 	@find test -type f -name *.coffee ! -iname "versions.coffee" -exec $(cjsify) {} --no-node \; > tmp/tests.js
 
-browsertest/es6/tests.js: package.json browsertest tmp/test-vendor.js tmp/test-cases.js dist/z-core-es6.js
-	@mocha init browsertest/es6
-	@cat tmp/vendor.js dist/z-core-es6.js tmp/tests.js > browsertest/es6/tests.js
+tmp/browsertest/es6/tests.js: package.json tmp/browsertest tmp/test-vendor.js tmp/test-cases.js dist/z-core-es6.js
+	@mocha init tmp/browsertest/es6
+	@cat tmp/vendor.js dist/z-core-es6.js tmp/tests.js > tmp/browsertest/es6/tests.js
 
-browsertest/default/tests.js: package.json browsertest tmp/test-vendor.js tmp/test-cases.js dist/z-core.js
-	@mocha init browsertest/default
-	@cat tmp/vendor.js dist/z-core.js tmp/tests.js > browsertest/default/tests.js
+tmp/browsertest/default/tests.js: package.json tmp/browsertest tmp/test-vendor.js tmp/test-cases.js dist/z-core.js
+	@mocha init tmp/browsertest/default
+	@cat tmp/vendor.js dist/z-core.js tmp/tests.js > tmp/browsertest/default/tests.js
 
 
 
@@ -74,11 +74,11 @@ browsertest/default/tests.js: package.json browsertest tmp/test-vendor.js tmp/te
 ## ==========================================================================
 
 clean:
-	@rm -rf lib browsertest tmp .cov
+	@rm -rf lib tmp .cov
 
 update-dist: dist/z-core-es6.js dist/z-core-es6-min.js dist/z-core.js dist/z-core-min.js
 
-compile-browser-tests: browsertest/es6/tests.js browsertest/default/tests.js
+compile-browser-tests: tmp/browsertest/es6/tests.js tmp/browsertest/default/tests.js
 
 deploy-browser-tests: compile-browser-tests
 	@bucketful

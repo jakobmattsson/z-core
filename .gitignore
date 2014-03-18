@@ -1,9 +1,8 @@
 node_modules
 lib
 .cov
-browsertest
 config.json
 *.log
 tmp
-z-core.sublime-workspace
+*.sublime-workspace
 .DS_Store

@@ -9,7 +9,6 @@
       ".cov",
       "dist",
       "tmp",
-      "browsertest",
       "lib",
       "node_modules"
     ]

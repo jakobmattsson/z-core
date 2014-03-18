@@ -24,7 +24,7 @@
   ],
   "bucketful": {
     "bucket": "z-test.jdevab.com",
-    "source": "browsertest",
+    "source": "tmp/browsertest",
     "region": "eu-west-1"
   },
   "chalcogen": {
