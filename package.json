@@ -23,13 +23,13 @@
     "LICENSE"
   ],
   "bucketful": {
-    "bucket": "z-test.jdevab.com",
+    "bucket": "z-core.jdevab.com",
     "source": "tmp/browsertest",
     "region": "eu-west-1"
   },
   "chalcogen": {
     "timeout": 60000,
-    "domain": "z-test.jdevab.com.s3-website-eu-west-1.amazonaws.com",
+    "domain": "z-core.jdevab.com.s3-website-eu-west-1.amazonaws.com",
     "path": "/default/index.html",
     "environments": [
       {

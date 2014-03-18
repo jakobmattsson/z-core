@@ -51,7 +51,7 @@ dist/z-core-min.js: lib dist tmp/dist-header.txt
 # Browser test files
 # ------------------
 
-tmp/browsertest: tmp
+tmp/browsertest:
 	@mkdir -p tmp/browsertest
 
 tmp/test-vendor.js: package.json tmp $(LIBS) test/support/browser.js
