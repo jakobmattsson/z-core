@@ -120,4 +120,5 @@ else
 	@git add bower.json package.json dist/*.js
 	@git commit -m v$(VERSION)
 	@git tag -a v$(VERSION) -m v$(VERSION)
+	@git push --follow-tags
 endif
