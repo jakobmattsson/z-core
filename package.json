@@ -9,7 +9,7 @@
     "client",
     "browser"
   ],
-  "version": "0.5.5",
+  "version": "0.5.6",
   "author": "Jakob Mattsson <jakob.mattsson@gmail.com> (jakobm.com)",
   "license": "MIT",
   "main": "./lib/index.js",
