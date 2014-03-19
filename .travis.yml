@@ -11,6 +11,7 @@ deploy:
   on:
     node: '0.10'
     tags: true
+    repo: jakobmattsson/z-core
 notifications:
   hipchat:
     rooms:
