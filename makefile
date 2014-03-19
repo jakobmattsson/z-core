@@ -1,5 +1,6 @@
 DATE = $(shell date +'%Y-%m-%d')
 GIT_STATUS = $(shell git status --porcelain)
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
 CHAI = node_modules/chai/chai.js
 CHAI_AS_PROMISED = node_modules/chai-as-promised/lib/chai-as-promised.js
@@ -109,6 +110,8 @@ endif
 release:
 ifneq "$(GIT_STATUS)" ""
 	@echo "clean up your changes first"
+else ifneq "$(GIT_BRANCH)" "master"
+	@echo "You can only release from the master branch"
 else
 	@npm test
 	@json -I -e "version='$(VERSION)'" -f bower.json
