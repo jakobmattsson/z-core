@@ -1,4 +1,5 @@
 DATE = $(shell date +'%Y-%m-%d')
+GIT_STATUS = $(shell git status --porcelain)
 
 CHAI = node_modules/chai/chai.js
 CHAI_AS_PROMISED = node_modules/chai-as-promised/lib/chai-as-promised.js
@@ -103,4 +104,17 @@ else
 	# Running CI in a node 0.10 - testing node AND browsers!
 	@make test-node
 	@make test-browsers
+endif
+
+release:
+ifneq "$(GIT_STATUS)" ""
+	@echo "clean up your changes first"
+else
+	@npm test
+	@json -I -e "version='$(VERSION)'" -f bower.json
+	@json -I -e "version='$(VERSION)'" -f package.json
+	@make update-dist
+	@git add bower.json package.json dist/*.js
+	@git commit -m v$(VERSION)
+	@git tag -a v$(VERSION) -m v$(VERSION)
 endif
