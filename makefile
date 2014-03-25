@@ -88,6 +88,9 @@ deploy-browser-tests: compile-browser-tests
 test-coverage: .cov
 	@JSCOV=.cov mocha --reporter mocha-term-cov-reporter $(MOCHA_PARAMS)
 
+test-coveralls: .cov
+	@JSCOV=.cov mocha --reporter mocha-lcov-reporter $(MOCHA_PARAMS) | coveralls
+
 test-node:
 	@mocha --grep "$(TESTS)" $(MOCHA_PARAMS)
 
@@ -102,8 +105,9 @@ else ifneq ($(TRAVIS_NODE_VERSION),0.10)
 	# Running CI in a node version other than 0.10; only testing in node
 	@make test-node
 else
-	# Running CI in a node 0.10 - testing node AND browsers!
+	# Running CI in a node 0.10 - testing node AND coverage AND browsers!
 	@make test-node
+	@make test-coveralls
 	@make test-browsers
 endif
 

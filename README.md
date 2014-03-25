@@ -2,6 +2,10 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/jakobmattsson-zcore.svg)](https://saucelabs.com/u/jakobmattsson-zcore)
 
+[![NPM version](https://badge.fury.io/js/z-core.png)](http://badge.fury.io/js/z-core)
+
+[![Coverage Status](https://coveralls.io/repos/jakobmattsson/manikin-mongodb/badge.png?branch=master)](https://coveralls.io/r/jakobmattsson/z-core?branch=master)
+
 
 
 # Z
