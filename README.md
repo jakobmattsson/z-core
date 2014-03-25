@@ -4,7 +4,7 @@
 
 [![NPM version](https://badge.fury.io/js/z-core.png)](http://badge.fury.io/js/z-core)
 
-[![Coverage Status](https://coveralls.io/repos/jakobmattsson/manikin-mongodb/badge.png?branch=master)](https://coveralls.io/r/jakobmattsson/z-core?branch=master)
+[![Coverage Status](https://coveralls.io/repos/jakobmattsson/z-core/badge.png?branch=master)](https://coveralls.io/r/jakobmattsson/z-core?branch=master)
 
 
 
