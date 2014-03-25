@@ -89,7 +89,7 @@ test-coverage: .cov
 	@JSCOV=.cov mocha --reporter mocha-term-cov-reporter $(MOCHA_PARAMS)
 
 test-coveralls: .cov
-	@JSCOV=.cov mocha --reporter mocha-lcov-reporter $(MOCHA_PARAMS) | coveralls
+	@JSCOV=.cov mocha --reporter mocha-lcov-reporter $(MOCHA_PARAMS) | coveralls src
 
 test-node:
 	@mocha --grep "$(TESTS)" $(MOCHA_PARAMS)
