@@ -102,8 +102,9 @@ run-local: compile-browser-tests
 
 run-tests: lib
 ifneq ($(CI),true)
-	# Not running CI; only testing in node
+	# Not running CI; only testing in node and showing code coverage
 	@make test-node
+	@make test-coverage
 else ifneq ($(TRAVIS_NODE_VERSION),0.10)
 	# Running CI in a node version other than 0.10; only testing in node
 	@make test-node
