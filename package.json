@@ -74,6 +74,7 @@
     "node": ">= 0.10 <= 0.11"
   },
   "devDependencies": {
+    "nws": "^0.5.0",
     "mocha-lcov-reporter": "^0.0.1",
     "coveralls": "^2.10.0",
     "jsontool": "7.0.1",

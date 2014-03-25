@@ -97,6 +97,9 @@ test-node:
 test-browsers: deploy-browser-tests
 	@chalcogen --platform saucelabs
 
+run-local: compile-browser-tests
+	@nws -p 5555 -d tmp/browsertest
+
 run-tests: lib
 ifneq ($(CI),true)
 	# Not running CI; only testing in node
