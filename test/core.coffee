@@ -14,20 +14,20 @@ describe 'Z bind async', ->
 
   it 'wraps a function to return a promise', ->
     pDivider = @Z.bindAsync(divider)
-    pDivider(10, 2).should.become 5
+    expect(pDivider(10, 2)).to.become 5
 
   it 'wraps a function with a bound context to return a promise', ->
     pDivider = @Z.bindAsync(divider, { extraValue: 6 })
-    pDivider(20, 2).should.become 16
+    expect(pDivider(20, 2)).to.become 16
 
   it 'resolves promise arguments before calling the function', ->
     pDivider = @Z.bindAsync(divider)
     value1 = @Z(10)
-    pDivider(value1, 2).should.become 5
+    expect(pDivider(value1, 2)).to.become 5
 
   it 'rejects the returned promise if the function throws', ->
     pDivider = @Z.bindAsync(divider)
-    pDivider(10, 0).should.be.rejected
+    expect(pDivider(10, 0)).to.be.rejected
 
 
 
@@ -45,20 +45,20 @@ describe 'Z bind sync', ->
 
   it 'wraps a function to return a promise', ->
     pDivider = @Z.bindSync(divider)
-    pDivider(10, 2).should.become 5
+    expect(pDivider(10, 2)).to.become 5
 
   it 'wraps a function with a bound context to return a promise', ->
     pDivider = @Z.bindSync(divider, { extraValue: 1 })
-    pDivider(20, 2).should.become 11
+    expect(pDivider(20, 2)).to.become 11
 
   it 'resolves promise arguments before calling the function', ->
     pDivider = @Z.bindSync(divider)
     value1 = @Z(10)
-    pDivider(value1, 2).should.become 5
+    expect(pDivider(value1, 2)).to.become 5
 
   it 'rejects the returned promise if the function throws', ->
     pDivider = @Z.bindSync(divider)
-    pDivider(10, 0).should.be.rejected
+    expect(pDivider(10, 0)).to.be.rejected
 
 
 
@@ -70,44 +70,45 @@ describe 'Z method', ->
   it 'returns an object without direct properties', ->
     x = @Z(1)
     keys = Object.keys(x)
-    keys.should.eql []
+    expect(keys).to.eql []
 
   it 'retains top-level functions', ->
     f = @Z((x) -> x*x)
     result = f.then (fResolved) -> fResolved(2)
-    result.should.become 4
+    expect(result).to.become 4
 
   it 'retains nested functions', ->
     obj = @Z({ a: 1, f: (x) -> x*x })
     result = obj.then (p) -> p.f(2)
-    result.should.become 4
+    expect(result).to.become 4
 
   it 'retains top-level regexps', ->
     f = @Z(/foo/)
     result = f.then (fResolved) -> fResolved.test("foobar")
-    result.should.become true
+    expect(result).to.become true
 
   it 'retains nested regexps', ->
     obj = @Z({ a: 1, f: /foo/ })
     result = obj.then (fResolved) -> fResolved.f.test("foobar")
-    result.should.become true
+    expect(result).to.become true
 
   it 'retains top-level dates', ->
     f = @Z(new Date())
     result = f.then (d) -> d.getTime()
-    result.should.eventually.be.a 'number'
+    expect(result).to.eventually.be.a 'number'
 
   it 'retains nested dates', ->
     obj = @Z({ a: 1, f: new Date()})
     result = obj.then (d) -> d.f.getTime()
-    result.should.eventually.be.a 'number'
+    expect(result).to.eventually.be.a 'number'
 
   it 'does not copy protoype chains when wrapping objects', ->
     a = {}
     b = Object.create(a)
 
     @Z(b).then (resolved) ->
-      Object.getPrototypeOf(resolved).should.eql Object.prototype
+      proto = Object.getPrototypeOf(resolved)
+      expect(proto).to.eql Object.prototype
 
   it 'does not copy properties from up the prototype chain when wrapping objects', ->
     a = { v1: 1 }
@@ -115,57 +116,57 @@ describe 'Z method', ->
     b.v2 = 2
 
     @Z(b).then (resolved) ->
-      resolved.should.have.keys ['v2']
+      expect(resolved).to.have.keys ['v2']
 
   it 'returns an object without direct properties', ->
     x = @Z(1)
     keys = Object.keys(x)
-    keys.should.eql []
+    expect(keys).to.eql []
 
   describe 'conf arg', ->
 
     it 'given depth 0 does not resolve nested properties, but leaves them as promises', ->
       v = @Z({ b: 2 })
       @Z({ a: v }, { depth: 0 }).then (res) ->
-        res.a.then.should.exist
+        expect(res.a.then).to.exist
 
     it 'given depth 1 resolves one level of promises and leaves the deeper ones intact', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       @Z({ a: v }, { depth: 1 }).then (res) ->
-        res.a.b.should.eql 2
-        res.a.b.should.not.eql 1
-        res.a.c.then.should.exist
+        expect(res.a.b).to.eql 2
+        expect(res.a.b).to.not.eql 1
+        expect(res.a.c.then).to.exist
 
     it 'given no depth it defaults to resolving one level of promises and leaves the deeper ones intact', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       @Z({ a: v }, { }).then (res) ->
-        res.a.b.should.eql 2
-        res.a.b.should.not.eql 1
-        res.a.c.then.should.exist
+        expect(res.a.b).to.eql 2
+        expect(res.a.b).to.not.eql 1
+        expect(res.a.c.then).to.exist
 
     it 'given no config at all it defaults to resolving one level of promises and leaves the deeper ones intact', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       @Z({ a: v }).then (res) ->
-        res.a.b.should.eql 2
-        res.a.b.should.not.eql 1
-        res.a.c.then.should.exist
+        expect(res.a.b).to.eql 2
+        expect(res.a.b).to.not.eql 1
+        expect(res.a.c.then).to.exist
 
     it 'given depth null resolves all promises at all levels', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       @Z({ a: v }, { depth: null }).then (res) ->
-        res.should.eql { a: { b: 2, c: 1 }}
+        expect(res).to.eql { a: { b: 2, c: 1 }}
 
     it 'uses the config given at init if none is passed at Z-invokation', ->
       localZ = Z.init({ depth: null })
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       localZ({ a: v }).then (res) ->
-        res.should.eql { a: { b: 2, c: 1 }}
+        expect(res).to.eql { a: { b: 2, c: 1 }}
 
   describe 'then', ->
 
     it 'fucks up', ->
-      assertionResult = @Z(42).should.eventually.deep.equal(42)
-      assertionResult.should.be.fulfilled
+      assertionResult = expect(@Z(42)).to.eventually.deep.equal(42)
+      expect(assertionResult).to.be.fulfilled
 
     it 'returns an object that has the expected functions', ->
       @Z.mixin({
@@ -176,7 +177,7 @@ describe 'Z method', ->
       x = @Z(5).then((x) -> x * 10)
       keys = Object.keys(x).sort (a, b) -> a.localeCompare(b)
       mets = methodsList.sort (a, b) -> a.localeCompare(b)
-      keys.should.eql mets
+      expect(keys).to.eql mets
 
   describe 'mixin', ->
 
@@ -184,7 +185,7 @@ describe 'Z method', ->
       ret = @Z.mixin({
         f1: -> 1
       })
-      [ret].should.eql [undefined]
+      expect(ret).to.not.exist
 
     it 'allows new method to be added to the resulting promise', ->
       @Z.mixin({
@@ -192,8 +193,8 @@ describe 'Z method', ->
       })
       x = @Z(50)
       val = x.f1(100, 200)
-      Object.keys(x).should.eql ['f1']
-      val.should.become [50, 100, 200]
+      expect(Object.keys(x)).to.eql ['f1']
+      expect(val).to.become [50, 100, 200]
 
     it 'can be called multiple times to add multiple methods (1)', ->
       @Z.mixin({
@@ -205,8 +206,8 @@ describe 'Z method', ->
       x = @Z(50)
       v1 = x.f1(100, 200)
       v2 = x.f2(10, 20)
-      Object.keys(x).should.eql ['f1', 'f2']
-      v1.should.become [50, 100, 200]
+      expect(Object.keys(x)).to.eql ['f1', 'f2']
+      expect(v1).to.become [50, 100, 200]
 
     it 'can be called multiple times to add multiple methods (2)', ->
       @Z.mixin({
@@ -218,8 +219,8 @@ describe 'Z method', ->
       x = @Z(50)
       v1 = x.f1(100, 200)
       v2 = x.f2(10, 20)
-      Object.keys(x).should.eql ['f1', 'f2']
-      v2.should.become 80
+      expect(Object.keys(x)).to.eql ['f1', 'f2']
+      expect(v2).to.become 80
 
     it 'can mixin the same function multiple times and passes the previous as context to the next', ->
       @Z.mixin({
@@ -232,8 +233,8 @@ describe 'Z method', ->
       x = @Z(50)
       v1 = x.f1(100, 200)
 
-      Object.keys(x).should.eql ['f1']
-      v1.should.become 353
+      expect(Object.keys(x)).to.eql ['f1']
+      expect(v1).to.become 353
 
     it 'can mixin more than two of the same function', ->
       @Z.mixin({
@@ -245,7 +246,7 @@ describe 'Z method', ->
       @Z.mixin({
         f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3 })]
       })
-      @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
+      expect(@Z(50).f1(100, 200)).to.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
 
     it 'never mixes in an alternative base function', ->
       @Z.mixin({
@@ -257,10 +258,10 @@ describe 'Z method', ->
       @Z.mixin({
         f1: (a1, a2) -> [@value, Object.keys(@), @base.call({ value: 3, base: -> 1000 })]
       })
-      @Z(50).f1(100, 200).should.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
+      expect(@Z(50).f1(100, 200)).to.become [50,["value","base"],[3,["value","base"],[2,["value"]]]]
 
     it 'resolves arguments that are promises before running the mixin', ->
       @Z.mixin({
-        f: (v) -> v.should.eql 56
+        f: (v) -> expect(v).to.eql 56
       })
       @Z(1).f(@Z(56))

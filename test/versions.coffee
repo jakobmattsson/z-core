@@ -6,7 +6,7 @@ propagate = (onErr, onSucc) -> (err, rest...) -> if err then onErr(err) else onS
 it 'syncs the npm-version with the bower-version', ->
   npm = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
   bower = JSON.parse(fs.readFileSync('./bower.json', 'utf8'))
-  bower.version.should.eql npm.version
+  expect(bower.version).to.eql npm.version
 
 it 'syncs the npm-version with the git version tag', (done) ->
   npm = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
@@ -18,7 +18,7 @@ it 'syncs the npm-version with the git version tag', (done) ->
 
     exec 'git describe --tags', propagate done, (stdout, stderr) ->
       gitVersion = stdout.split('\n')[0].match(/^v(\d+\.\d+\.\d+)$/)[1]
-      npm.version.should.eql gitVersion
+      expect(npm.version).to.eql gitVersion
       done()
 
 it 'syncs the npm-version with the version in the dist-files', (done) ->
@@ -31,6 +31,6 @@ it 'syncs the npm-version with the version in the dist-files', (done) ->
       fs.readFileSync(file, 'utf8').split('\n')[0]
 
     fileContent.forEach (firstLine) ->
-      firstLine.should.eql '// z-core v' + npm.version
+      expect(firstLine).to.eql '// z-core v' + npm.version
 
     done()
