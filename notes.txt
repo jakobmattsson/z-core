@@ -1,0 +1,44 @@
+		# firefox
+        { platform: "Windows 8.1", browserName: "firefox", version: "27" },
+        #{ platform: "Windows XP", browserName: "firefox", version: "2" }, # fails. fix.
+        { platform: "Linux", browserName: "firefox", version: "8" },
+        { platform: "Linux", browserName: "firefox", version: "27" },
+        { platform: "OS X 10.9", browserName: "firefox", version: "26" },
+        { platform: ["OS X 10.6", browserName: "firefox", version: "4" },
+        #-- chrome
+        { platform: "Windows 8.1", browserName: "chrome", version: "beta" },
+        { platform: "Windows XP", browserName: "googlechrome", version: "26" },
+        { platform: "OS X 10.8", browserName: "chrome", version: "beta" },
+        { platform: "OS X 10.6", browserName: "chrome", version: "27" },
+        { platform: "Linux", browserName: "chrome", version: "32" },
+        { platform: "Linux", browserName: "chrome", version: "26" },
+        #-- explorer
+        #{ platform: "Windows XP", browserName: "internet explorer", version: "6" }, # fails. fix.
+        #{ platform: "Windows XP", browserName: "internet explorer", version: "7" }, # fails.fix.
+        #{ platform: "Windows 7", browserName: "internet explorer", version: "8" }, # fails. fix.
+        #{ platform: "Windows 7", browserName: "internet explorer", version: "9" }, # fails. fix.
+        { platform: "Windows 7", browserName: "internet explorer", version: "10" },
+        #-- safari
+        #{ platform: "Windows XP", browserName: "safari", version: "3" }, # fails.fix.
+        { platform: "Windows 7", browserName: "safari", version: "5" },
+        { platform: "OS X 10.6", browserName: "safari", version: "5" },
+        { platform: "OS X 10.8", browserName: "safari", version: "6" }
+
+
+
+
+      { "platform": "Windows 8.1", "browserName": "firefox",           "version": "27" },
+      { "platform": "Linux",       "browserName": "firefox",           "version": "8" },
+      { "platform": "Linux",       "browserName": "firefox",           "version": "27" },
+      { "platform": "OS X 10.9",   "browserName": "firefox",           "version": "26" },
+      { "platform": "OS X 10.6",   "browserName": "firefox",           "version": "4" },
+      { "platform": "Windows 8.1", "browserName": "chrome",            "version": "beta" },
+      { "platform": "Windows XP",  "browserName": "googlechrome",      "version": "26" },
+      { "platform": "OS X 10.8",   "browserName": "chrome",            "version": "beta" },
+      { "platform": "OS X 10.6",   "browserName": "chrome",            "version": "27" },
+      { "platform": "Linux",       "browserName": "chrome",            "version": "32" },
+      { "platform": "Linux",       "browserName": "chrome",            "version": "26" },
+      { "platform": "Windows 7",   "browserName": "internet explorer", "version": "10" },
+      { "platform": "Windows 7",   "browserName": "safari",            "version": "5" },
+      { "platform": "OS X 10.6",   "browserName": "safari",            "version": "5" },
+      { "platform": "OS X 10.8",   "browserName": "safari",            "version": "6" }
