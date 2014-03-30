@@ -1,10 +1,8 @@
-[![Build Status](https://secure.travis-ci.org/jakobmattsson/z-core.png)](http://travis-ci.org/jakobmattsson/z-core) 
-
-[![Selenium Test Status](https://saucelabs.com/browser-matrix/jakobmattsson-zcore.svg)](https://saucelabs.com/u/jakobmattsson-zcore)
-
+[![Build Status](https://secure.travis-ci.org/jakobmattsson/z-core.png)](http://travis-ci.org/jakobmattsson/z-core)
+[![Coverage Status](https://coveralls.io/repos/jakobmattsson/z-core/badge.png?branch=master)](https://coveralls.io/r/jakobmattsson/z-core?branch=master)
 [![NPM version](https://badge.fury.io/js/z-core.png)](http://badge.fury.io/js/z-core)
 
-[![Coverage Status](https://coveralls.io/repos/jakobmattsson/z-core/badge.png?branch=master)](https://coveralls.io/r/jakobmattsson/z-core?branch=master)
+[![Selenium Test Status](https://saucelabs.com/browser-matrix/jakobmattsson-zcore.svg)](https://saucelabs.com/u/jakobmattsson-zcore)
 
 
 
