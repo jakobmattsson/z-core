@@ -19,20 +19,17 @@ init = (defaultConf) ->
 
   mixedIn = {}
   mixinObj = {}
+  depth = if defaultConf?.depth? then defaultConf?.depth else 1000000
 
   updateMixinObj = ->
     pairs(mixedIn).forEach ([name, func]) ->
       mixinObj[name] = (args...) ->
         @then (resolved) ->
-          resolveCompletely(args, 1).then (args) ->
+          resolveCompletely(args, depth).then (args) ->
             func.apply({ value: resolved }, args)
 
-  Z = (obj, conf) ->
-    conf = conf ? defaultConf ? {}
-    conf.depth = 1 if typeof conf.depth == 'undefined'
-    conf.depth = 1000000 if conf.depth == null
-
-    resolvedObject = resolveCompletely(obj, conf.depth)
+  Z = (obj) ->
+    resolvedObject = resolveCompletely(obj, depth)
     overrideLayer = objectCreate(resolvedObject)
     resultingPromise = objectCreate(overrideLayer)
 

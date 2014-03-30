@@ -126,30 +126,34 @@ describe 'Z method', ->
   describe 'conf arg', ->
 
     it 'given depth 0 does not resolve nested properties, but leaves them as promises', ->
-      v = @Z({ b: 2 })
-      @Z({ a: v }, { depth: 0 }).then (res) ->
+      Z2 = Z.init({ depth: 0 })
+      v = Z2({ b: 2 })
+      Z2({ a: v }).then (res) ->
         expect(res.a.then).to.exist
 
     it 'given depth 1 resolves one level of promises and leaves the deeper ones intact', ->
-      v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
-      @Z({ a: v }, { depth: 1 }).then (res) ->
+      Z0 = Z.init({ depth: 0 })
+      Z1 = Z.init({ depth: 1 })
+
+      v = Z0({ b: 2, c: Z0(1) })
+      Z1({ a: v }).then (res) ->
         expect(res.a.b).to.eql 2
         expect(res.a.b).to.not.eql 1
         expect(res.a.c.then).to.exist
 
-    it 'given no depth it defaults to resolving one level of promises and leaves the deeper ones intact', ->
+    it 'given no depth it defaults to resolving infinitely deep', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       @Z({ a: v }, { }).then (res) ->
         expect(res.a.b).to.eql 2
         expect(res.a.b).to.not.eql 1
-        expect(res.a.c.then).to.exist
+        expect(res.a.c).to.eql 1
 
-    it 'given no config at all it defaults to resolving one level of promises and leaves the deeper ones intact', ->
+    it 'given no config at all it defaults to resolving infinitely deep', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
       @Z({ a: v }).then (res) ->
         expect(res.a.b).to.eql 2
         expect(res.a.b).to.not.eql 1
-        expect(res.a.c.then).to.exist
+        expect(res.a.c).to.eql 1
 
     it 'given depth null resolves all promises at all levels', ->
       v = @Z({ b: 2, c: @Z(1) }, { depth: 0 })
@@ -265,3 +269,9 @@ describe 'Z method', ->
         f: (v) -> expect(v).to.eql 56
       })
       @Z(1).f(@Z(56))
+
+    it 'resolves arguments that are promises before running the mixin several levels deep', ->
+      @Z.mixin({
+        f: (v) -> expect(v.a.b.c).to.eql 57
+      })
+      @Z(1).f(({ a: b: c: @Z(57) }))
