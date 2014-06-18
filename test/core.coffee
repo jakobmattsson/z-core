@@ -3,8 +3,6 @@ describe 'Z bind async', ->
   beforeEach ->
     @Z = Z.init()
 
-  global = do -> this
-
   divider = (a, b, callback) ->
     throw new Error("Division by zero") if b == 0
     setTimeout (=>
@@ -35,8 +33,6 @@ describe 'Z bind sync', ->
 
   beforeEach ->
     @Z = Z.init()
-
-  global = do -> this
 
   divider = (a, b) ->
     throw new Error("Division by zero") if b == 0
