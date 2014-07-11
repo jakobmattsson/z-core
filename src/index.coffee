@@ -2,16 +2,95 @@ tools = require './tools'
 {Promise} = require 'es6-promise'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
-resolveCompletely = (unresolved, depth) ->
-  resolveAll([unresolved]).then ([resolved]) ->
+## Lägg in något som stoppar ALLDELES för djup rekursion. Man kan ju inte avsiktligt mena att man
+## vill rekursera mer än 1000 steg tex.
 
-    return resolved if depth <= 0 || !resolved? || isPrimitive(resolved)
-    return resolveAll(resolved.map((x) -> resolveCompletely(x, depth-1) )) if isArray(resolved)
 
-    unresolvedValues = resolveAll(values(resolved).map((x) -> resolveCompletely(x, depth-1)))
+## Bästa vore kanske att inte köra rekursiva algoritmen alls som default, utan bara försöka detecta om den rekursiv.
+## Om den är det, då avbryter man och kör den rekursiva.
 
-    unresolvedValues.then (resolvedValues) ->
-      object(keys(resolved), resolvedValues)
+
+resolveCompletely = (__unresolved, __depth) ->
+
+  console.log "started resolve completely"
+
+  counter = 0
+  objs = {}
+  endResult = {}
+
+  TempType = (val) ->
+    this.val = val
+
+
+  # Alla objekt får en property som heter __objectIndex
+  # När man hittar ett objekt lägre ner i kedjan som redan har denna så betyder det att man påbörjat
+  # en resolving av det objektet. Istället för att returnera det riktiga objektet så returnerar
+  # vi en specialtyp som innehåller IDt till den verkliga typen som det gäller.
+
+  # Som ett slutsteg i algoritmen så substituerar man in alla verkliga objekt där.
+
+
+  rebuild = (obj) ->
+    # TODO: om obj är TempType, returnera verkligt värde
+    return obj if isPrimitive(obj)
+    return obj.map((x) -> rebuild(x)) if isArray(obj)
+    vals = values(obj).map(rebuild)
+    object(keys(obj), vals)
+
+  strip = (obj) ->
+    return obj if isPrimitive(obj)
+    return obj.map((x) -> strip(x)) if isArray(obj)
+
+    if obj.__objectIndex?
+      delete obj.__objectIndex
+
+    vals = values(obj).map(strip)
+    object(keys(obj), vals)
+
+
+
+  resolveCom = (unresolved, depth) ->
+
+    resolveAll([unresolved]).then ([resolved]) ->
+
+      return resolved if depth <= 0 || !resolved? || isPrimitive(resolved)
+
+      if counter > 1000
+        throw new Error("WHAT")
+
+      if resolved.__objectIndex?
+        console.log "has one", resolved
+        return new TempType(resolved.__objectIndex)
+        # throw new "fail"
+
+      thisValue = counter++
+
+      resolved.__objectIndex = thisValue
+      objs[thisValue] = resolved
+
+      console.log resolved
+
+      # För varje value, plocka ut deras resolvade värde
+      # I en iteration så kommer jag se att ett 
+
+      return resolveAll(resolved.map((x) -> resolveCom(x, depth-1) )) if isArray(resolved)
+
+      unresolvedValues = resolveAll(values(resolved).map((x) -> resolveCom(x, depth-1)))
+
+      unresolvedValues.then (resolvedValues) ->
+        result = object(keys(resolved), resolvedValues)
+        #result.__objectIndex = thisValue
+        endResult[thisValue] = result
+        result
+
+  # behöver plocka bort alla __objectIndex i slutsteget också
+  rr = resolveCom(__unresolved, __depth)
+  
+  rr2 = strip(rebuild(rr))
+
+
+  console.log "RRRRRRRRRRRR", rr2
+  rr2
 
 
 
