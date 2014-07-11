@@ -119,6 +119,22 @@ describe 'Z method', ->
     keys = Object.keys(x)
     expect(keys).to.eql []
 
+  it 'does not get stuck in native recursive objects', ->
+    obj1 = { v: 10 }
+    obj2 = { v: 20, o: obj1 }
+    obj1.o = obj2
+
+    @Z(obj1).then(((resolved) -> "worked"), ((err) -> err.message)).then (res) ->
+      expect(res).to.eql 'Cyclic object detected'
+
+  it 'does not get stuck in promised recursive objects', ->
+    obj1 = { v: @Z(10) }
+    obj2 = { v: @Z(20), o: @Z(obj1) }
+    obj1.o = @Z(obj2)
+
+    @Z(obj1).then(((resolved) -> "worked"), ((err) -> err.message)).then (res) ->
+      expect(res).to.eql 'Cyclic object detected'
+
   describe 'conf arg', ->
 
     it 'given depth 0 does not resolve nested properties, but leaves them as promises', ->
