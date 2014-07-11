@@ -119,6 +119,21 @@ describe 'Z method', ->
     keys = Object.keys(x)
     expect(keys).to.eql []
 
+  it 'does not get stuck in recursive objects', ->
+    obj1 = { v: @Z(10) }
+    obj2 = { v: @Z(20), o: obj1 }
+    obj1.o = obj2
+
+    @Z(obj1).then (resolved) ->
+      res1 = resolved
+      res2 = resolved.o
+      expect(res1.v).to.eql 10
+      expect(res2.v).to.eql 20
+      expect(res1.o).to.eql res2
+      expect(res2.o).to.eql res1
+      expect(Object.keys(res1)).to.eql ['v', 'o']
+      expect(Object.keys(res2)).to.eql ['v', 'o']
+
   describe 'conf arg', ->
 
     it 'given depth 0 does not resolve nested properties, but leaves them as promises', ->
