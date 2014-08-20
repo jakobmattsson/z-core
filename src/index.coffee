@@ -50,6 +50,23 @@ init = (defaultConf) ->
         func.apply(context, arguments)
     updateMixinObj()
 
+  Z.mixinAsync = proc (hash) ->
+    pairs(hash).forEach ([name, func]) ->
+      oldOne = mixedIn[name]
+      mixedIn[name] = (args...) ->
+        new Promise (resolve, reject) =>
+          context = { value: @value }
+          context.base = oldOne if oldOne
+          context.done = (err, value) ->
+            return reject(err) if err
+            resolve(value)
+
+          try
+            func.apply(context, args)
+          catch e
+            reject(e)
+    updateMixinObj()
+
   Z.bindSync = (func, context) ->
     (unresolvedArgs...) ->
       Z(unresolvedArgs).then (args) =>

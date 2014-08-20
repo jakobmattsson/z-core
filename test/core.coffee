@@ -271,3 +271,18 @@ describe 'Z method', ->
         f: (v) -> expect(v.a.b.c).to.eql 57
       })
       @Z(1).f(({ a: b: c: @Z(57) }))
+
+  describe 'mixinAsync', ->
+
+    it 'allows new method to be added to the resulting promise', ->
+      @Z.mixinAsync({
+        f1: (a1, a2) ->
+          setTimeout (=>
+            console.log "value", @value
+            @done(null, [@value, a1, a2])
+          ), 1
+      })
+      x = @Z(50)
+      val = x.f1(100, 200)
+      expect(Object.keys(x)).to.eql ['f1']
+      expect(val).to.become [50, 100, 200]

@@ -4,7 +4,7 @@ describe 'root Z', ->
     expect(Z).to.be.a 'function'
 
   it 'has an init and a mixin function', ->
-    expectedFunctions = ['bindAsync', 'bindSync', 'init', 'mixin']
+    expectedFunctions = ['bindAsync', 'bindSync', 'init', 'mixin', 'mixinAsync']
 
     keys = Object.keys(Z)
     sortedKeys = keys.sort()
