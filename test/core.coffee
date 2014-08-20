@@ -277,10 +277,9 @@ describe 'Z method', ->
     it 'allows new method to be added to the resulting promise', ->
       @Z.mixinAsync({
         f1: (a1, a2) ->
-          setTimeout (=>
-            console.log "value", @value
+          setTimeout =>
             @done(null, [@value, a1, a2])
-          ), 1
+          , 1
       })
       x = @Z(50)
       val = x.f1(100, 200)
