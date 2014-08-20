@@ -128,11 +128,14 @@ describe 'Z method', ->
       expect(res).to.eql 'Cyclic object detected'
 
   it 'does not get stuck in promised recursive objects', ->
-    obj1 = { v: @Z(10) }
-    obj2 = { v: @Z(20), o: @Z(obj1) }
-    obj1.o = @Z(obj2)
 
-    @Z(obj1).then(((resolved) -> "worked"), ((err) -> err.message)).then (res) ->
+    get = ->
+      obj1 = { v: @Z(10) }
+      obj2 = { v: @Z(20), o: @Z(obj1) }
+      obj1.o = @Z(obj2)
+      @Z(obj1)
+
+    get().then(((resolved) -> "worked"), ((err) -> err.message)).then (res) ->
       expect(res).to.eql 'Cyclic object detected'
 
   describe 'conf arg', ->

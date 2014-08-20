@@ -12,7 +12,7 @@ cjsify = node_modules/commonjs-everywhere/bin/cjsify
 TEST_FILES = $(shell find test -name *.coffee)
 LIBS = $(CHAI) $(CHAI_AS_PROMISED)
 
-MOCHA_PARAMS = --compilers coffee:coffee-script/register --require test/support/node.js
+MOCHA_PARAMS = --compilers coffee:coffee-script/register --require test/support/node.js --timeout 1000
 
 
 ## Creating files and folders

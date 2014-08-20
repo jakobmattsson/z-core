@@ -2,16 +2,41 @@ tools = require './tools'
 {Promise} = require 'es6-promise'
 {pairs, keys, values, object, resolveAll, isPrimitive, isArray, objectCreate, proc} = tools
 
-resolveCompletely = (unresolved, depth) ->
+resolveCompletely = (unresolved, depth, done) ->
+
+  done ?= {
+    unres: []
+    res: []
+  }
+
+  if !isPrimitive(unresolved)
+    if unresolved in done.unres
+      console.log "CYCLIC--------------- unresolved"
+      throw new Error("Cyclic object detected")
+    done.unres.push(unresolved)
+    done.res.push(unresolved)
+  console.log "1", done
+
   resolveAll([unresolved]).then ([resolved]) ->
 
     return resolved if depth <= 0 || !resolved? || isPrimitive(resolved)
-    return resolveAll(resolved.map((x) -> resolveCompletely(x, depth-1) )) if isArray(resolved)
 
-    unresolvedValues = resolveAll(values(resolved).map((x) -> resolveCompletely(x, depth-1)))
+    if !isPrimitive(resolved)
+      if resolved in done.res
+        console.log "CYCLIC--------------- resolved"
+        throw new Error("Cyclic object detected")
+      done.res.push(resolved)
+      done.unres.push(resolved)
+
+    console.log "2", done
+
+    return resolveAll(resolved.map((x) -> resolveCompletely(x, depth-1, done))) if isArray(resolved)
+
+    unresolvedValues = resolveAll(values(resolved).map((x) -> resolveCompletely(x, depth-1, done)))
 
     unresolvedValues.then (resolvedValues) ->
       object(keys(resolved), resolvedValues)
+
 
 
 
