@@ -74,21 +74,21 @@
     "node": ">= 0.10 <= 0.11"
   },
   "devDependencies": {
-    "nws": "^0.5.0",
-    "mocha-lcov-reporter": "^0.0.1",
+    "nws": "^0.6.1",
+    "mocha-lcov-reporter": "^0.0.2",
     "coveralls": "^2.10.0",
-    "jsontool": "7.0.1",
+    "json": "^9.0.3",
     "commonjs-everywhere": "^0.9.7",
     "bucketful": "^0.15.1",
     "chalcogen": "^0.4.0",
-    "jscov": "^0.5.7",
-    "mocha": "^1.18.0",
+    "jscov": "^0.6.15",
+    "mocha": "^2.2.5",
     "mocha-term-cov-reporter": "^0.2.0",
     "chai-as-promised": "^3.3.1",
     "coffee-script": "^1.7.1"
   },
   "dependencies": {
-    "es6-promise": "^0.1.1"
+    "es6-promise": "^2.3.0"
   },
   "scripts": {
     "test": "make run-tests"
